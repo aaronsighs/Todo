@@ -17,6 +17,93 @@
 
 .title {
     text-align: center;
+    width:25%;
+    padding:5px
+}
+.title input:read-only{
+     color:blue;
+}
+.title i{
+    font-size: .7rem;
+}
+
+.title input::placeholder{
+    color:blue;
+    text-decoration: underline;
+    
+}
+
+
+.title input:read-only::placeholder{
+    color:green;
+    text-decoration: none;
+}
+
+
+.todo-ele{
+    border:1px solid black;
+    position: relative;
+    text-decoration: line-through;
+    box-shadow: 1px 1px 1px black;
+    width:33%;
+    min-width: 120px;
+
+}
+.todo-ele:hover{
+    transform: scale(1.005);
+    box-shadow: 2px 2px 8px black;
+}
+
+.todo-ele .descr input{
+    text-align: left;
+    width:90%;
+    font-size: .7rem;
+}
+
+.todo-name input{
+    outline: 0px;
+    border: 0px;
+    text-align: left;
+    font-size: .7rem;
+    font-weight: 600;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    padding-top: 2px;
+    display: inline-block;
+    max-width: 75%;
+
+}
+.tg-txt{
+    position: relative;
+}
+.tg-txt i{
+    position: absolute;
+    right:0;
+    top:0;
+}
+.check{
+    float:left;
+}
+
+.bi,.check{
+    cursor: pointer;
+}
+
+
+.tg-txt input:read-only{
+    cursor:default;
+}
+
+
+
+.todo-name i{
+    font-size: .6rem;
+}
+.todo-name{
+    display: inline-block;
+    max-width: 33%;
+    overflow: hidden;
 }
 
 .title h3 {
@@ -24,17 +111,89 @@
     margin: 0;
     padding: 0;
 }
+.tg-txt:after{
+    display: inline-block;
+    color:red;
+}
 
 .title input {
     color: red;
     outline: 0px;
     border: 0px;
     text-align: center;
-    font-size: 1rem;
+    font-size: .85rem;
     font-weight: 700;
     height: 20px;
     margin: 0;
     padding: 0;
     width: 80px;
     padding-top: 2px;
+}
+.banner{
+    height:10px;
+    width:100%;
+    background-color: rgb(198, 198, 198);
+    margin: 0;
+    padding:0;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.controls{
+    float: right;
+}
+.controls > *{
+    margin-left:10px;
+}
+
+.stats,.controls,.controls >*{
+    display: inline-block;
+}
+
+.create-new-todo{
+    width:33%;
+    border:1px solid black;
+}
+.push-new{
+    display: inline-block;
+    background-color: rgb(234, 234, 234);
+    font-size: .8rem;
+    border-radius: 10px;
+    margin-left:10px;
+    cursor: pointer;
+}
+.push-new:hover{
+    transform: scale(1.005);
+
+}
+i.open-form{
+    float:right;
+    font-size: 1.25rem;
+    margin-right:10px;
+}
+.form-module{
+    position: absolute;
+    z-index:60;
+    width: 100%;
+    height:100%;
+    background-color: rgba(229, 229, 229, 0.71);
+    top:0%;
+    left:0%;
+}
+.form-module .content{
+    width:80%;
+    height:80%;
+    margin: 10% 10%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 5px black;
+    z-index:65;
+    position: absolute;
+    border-radius: 5px;
+}
+body,html{
+    padding:0;
+    margin:0;
+    position: relative;
+    height:100%;
+    width:100%;
+    overflow:hidden;
 }
