@@ -108,8 +108,68 @@ function drawMakeNew(todos:TodosModel){
 }
 
 
+function createEditForm(todos:TodosModel,todo:todo){
+    createForm(todos);
+    setCreateEditFormDefaults(todo)
+    let formBase = <HTMLElement>document.querySelector(".form-module");
+    let form = <HTMLElement>document.querySelector(".form-module form");
+    form.onsubmit = (e)=>{
+        e.preventDefault()
+        let formData = getFormData();
+        if (formData.date){todo.setOptions("dueDate",formData.date)}
+        if (formData.priority){todo.setOptions("priority",formData.priority)}
+        if (formData.title){todo.setTitle(formData.title);
+        todo.setDescription(formData.descr);
+        redrawTodo(todos,todo);
+        document.body.removeChild(formBase);
+    };
+    drawComments(todo);
 
-function createForm(todos:TodosModel){
+}
+}
+
+
+function setCreateEditFormDefaults(todo:todo){
+    (<HTMLInputElement>document.querySelector("#inputTitle")).value = todo.getTitle();
+    (<HTMLInputElement>document.querySelector("#priority")).value = <string>todo.getOptions("priority");
+    (<HTMLInputElement>document.querySelector("#description")).value = <string>todo.getDescription();
+
+}
+
+function redrawTodo(todos:TodosModel,todo:todo){
+    let htmlTodo = createTodo(todo,todos,false);
+    let oldTodo  = <HTMLElement>document.querySelector("#section-"+todos.getId() + " .todo-area .todo-ele")
+    console.log("here")
+    oldTodo.replaceWith(htmlTodo);
+
+}
+
+
+
+function drawComments(todo:todo){
+    let formContent = <HTMLElement>document.querySelector(".form-module .content")
+    let commentSection = makeHtmlElement("div",formContent,{classes:"comment-section"});
+    (<Array<note>>todo.getOptions("notes")).forEach( (note:note)=>{
+        makeHtmlElement("div",commentSection,{classes:"note",id:note.id,text:note.message})
+     } )
+
+}
+
+
+function getFormData(){
+    let text = (<HTMLInputElement>document.querySelector("#inputTitle")).value;
+    let priority:string   =  (<HTMLInputElement>document.querySelector("#priority")).value;
+    let descr:string   =  (<HTMLInputElement>document.querySelector("#description")).value;
+    let date:any   =  (<HTMLInputElement>document.querySelector("#date")).value;
+    let dateObj = new Date(date)
+    dateObj.setDate(dateObj.getDate()+1);
+    date = date ? dateObj.toLocaleString('default', { month: 'short' }) + date.slice(date.length-2) : date
+    return {title:text,priority,descr,date}
+}
+
+
+
+function createForm(todos:TodosModel,allowComments=false){
     console.log(todos)
     
     let formBase = makeHtmlElement("div",document.body,{classes:"form-module"});
@@ -136,20 +196,10 @@ function createForm(todos:TodosModel){
         // let newTodo = new todo(todoName);
         // todos.add(newTodo);
         // createTodo(newTodo,todos);
-       let text = (<HTMLInputElement>document.querySelector("#inputTitle")).value;
-       let priority:string   =  (<HTMLInputElement>document.querySelector("#priority")).value;
-       let descr:string   =  (<HTMLInputElement>document.querySelector("#description")).value;
-       let date:any   =  (<HTMLInputElement>document.querySelector("#date")).value;
-       let dateObj = new Date(date)
-       dateObj.setDate(dateObj.getDate()+1);
-       date = date ? dateObj.toLocaleString('default', { month: 'short' }) + date.slice(date.length-2) : date
-       console.log(dateObj)
-       console.log(date)
-       console.log(text)
-       console.log(todos)
+       let formData = getFormData()
 
 
-        let newTodo = new todo(text,descr,{priority,dueDate:date})
+        let newTodo = new todo(formData.title,formData.descr,{priority:formData.priority,dueDate:formData.date})
         todos.add(newTodo);
         createTodo(newTodo,todos);
 
@@ -323,9 +373,10 @@ function replaceTextBoxWithTitle(id:string,text:string){
 
 
 
-function createTodo(todo:todo,todos:TodosModel){
+function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     let section = <HTMLElement>document.querySelector("#section-"+todos.getId() + " .todo-area")
 
+    if (!addToDom){section=null}
     let todoEle = makeHtmlElement("div",section,{classes:"todo-ele"})
 
     let banner  = makeHtmlElement("div",todoEle,{classes:"banner"})
@@ -343,11 +394,21 @@ function createTodo(todo:todo,todos:TodosModel){
         let date = makeHtmlElement("div",stats,{text:<string>todo.getOptions("dueDate"),classes:"due-date"})
     }
     if(todo.getDescription()){
-        let descrBtn = makeHtmlElement("i",stats,{classes:"descr-btn bi bi-card-text"})
+        let descrBtn = makeHtmlElement("i",stats,{classes:"descr-btn bi bi-card-text tooltip"})
+        let ttp  = makeHtmlElement("div",descrBtn,{classes:"tooltiptext",text:"has a description"})
+    }
+    if((<Array<string>>todo.getOptions("notes"))){
+        let length = (<Array<string>>todo.getOptions("notes")).length
+        let comment = makeHtmlElement("i",stats,{classes:"descr-btn bi bi-chat-right-quote-fill tooltip"})
+        let ttp2  = makeHtmlElement("div",comment,{classes:"tooltiptext",text:""+length+" comments"})
+
     }
 
     let controls = makeHtmlElement("div",todoEle,{classes:"controls"});
     let editBtn = makeHtmlElement("i",controls,{classes:"edit bi bi-pen"});
+    editBtn.onclick = (e) =>{
+        createEditForm(todos,todo)
+    }
 
 
     let delBtn = makeHtmlElement("i",controls,{classes:"delete bi bi-trash2-fill"});
@@ -450,7 +511,7 @@ var onTodosView = (function(currentTodos:TodosModel){
          return this.name;
      }
      setName(name:string){
-         console.log(name,this.name)
+         if(!name){return}
          this.name = name;
      }
      getId(){
@@ -462,10 +523,17 @@ var onTodosView = (function(currentTodos:TodosModel){
 
  }
 
+
+ type note ={
+     id:string
+     person?:string
+     message:string
+ }
+
  type Options = {
     dueDate:string,
     priority:string,
-    notes:Array<string>,
+    notes:Array<note>,
     isCheck:boolean,
     checkValue:boolean,
  }
@@ -496,9 +564,15 @@ class todo{
     getDescription(){return this.desciption;}
     getId(){return this.id}
 
-    setOptions(name:keyof Partial<Options>,value:any){this.setProps(this.option,name,value);}
-    setTitle(title:string){this.title=title;}
-    setDescription(text:string){this.desciption=text;}
+    setOptions(name:keyof Partial<Options>,value:any){
+        if (!value){return}
+        this.setProps(this.option,name,value);}
+    setTitle(title:string){
+        if(!title){return}
+        this.title=title;}
+    setDescription(text:string){
+ 
+        this.desciption=text;}
 
 }
 
@@ -509,8 +583,10 @@ class todo{
  table.add(
      new todo(
          "tired",
-         "",
-         {dueDate:"Jul10"}
+         "hi",
+         {dueDate:"Jul10",
+          notes:[{message:"im going there soon!",id:"note-001"}]
+     }
      )
  )
  table.show();
