@@ -83,6 +83,7 @@ function newTodoNameText(id:string):string{
 }
 
 function drawMakeNew(todos:TodosModel){
+    console.log(todos)
     let section = <HTMLElement>document.querySelector("#section-"+todos.getId() + " .make-new");
 
     let createBox = makeHtmlElement("div",section,{classes:"create-new-todo container todo-name"});
@@ -100,7 +101,7 @@ function drawMakeNew(todos:TodosModel){
 
     },true)
     let createFormBtn = makeHtmlElement("i",createBox,{classes:"open-form bi bi-plus-square-fill"})
-    createFormBtn.onclick = createForm
+    createFormBtn.onclick = (e)=>createForm(todos);
     
 
 
@@ -108,15 +109,58 @@ function drawMakeNew(todos:TodosModel){
 
 
 
-function createForm(){
+function createForm(todos:TodosModel){
+    console.log(todos)
     
-    let form = makeHtmlElement("div",document.body,{classes:"form-module"});
-    form.addEventListener("click",e=>{
-        if (e.target===form){
-        document.body.removeChild(form);
+    let formBase = makeHtmlElement("div",document.body,{classes:"form-module"});
+    formBase.addEventListener("click",e=>{
+        if (e.target===formBase){
+        document.body.removeChild(formBase);
         }
     },true)
-    let content = makeHtmlElement("div",form,{classes:"content"})
+    let content = makeHtmlElement("div",formBase,{classes:"content"})
+    let form    = makeHtmlElement("form",content);
+    let titleLabel = makeHtmlElement("label",form,{name:"title",text:"Title:"})
+    let title = <HTMLInputElement>makeHtmlElement("input",form,{name:"title",placeholder:"newTodo",id:"inputTitle"})
+    title.required = true;
+    let descrLabel = makeHtmlElement("label",form,{name:"descr",text:"Description:"})
+    let descr = <HTMLInputElement>makeHtmlElement("textArea",form,{name:"descr",placeholder:"description...",id:"description"})
+    descr.style.resize = "none";
+    let dateLabel = makeHtmlElement("label",form,{name:"descr",text:"Date:"})
+    let date = <HTMLInputElement>makeHtmlElement("input",form,{name:"date",type:"date",id:"date"})
+    let priorityLabel = makeHtmlElement("label",form,{name:"priority",text:"Priority:"})
+    let priority = <HTMLInputElement>makeHtmlElement("input",form,{name:"priority",type:"color",value:"#ffff00",id:"priority"})
+    let createBtn = <HTMLInputElement>makeHtmlElement("button",form,{text:"Create"})
+    form.onsubmit = (e)=>{
+        e.preventDefault()
+        // let newTodo = new todo(todoName);
+        // todos.add(newTodo);
+        // createTodo(newTodo,todos);
+       let text = (<HTMLInputElement>document.querySelector("#inputTitle")).value;
+       let priority:string   =  (<HTMLInputElement>document.querySelector("#priority")).value;
+       let descr:string   =  (<HTMLInputElement>document.querySelector("#description")).value;
+       let date:any   =  (<HTMLInputElement>document.querySelector("#date")).value;
+       let dateObj = new Date(date)
+       dateObj.setDate(dateObj.getDate()+1);
+       date = date ? dateObj.toLocaleString('default', { month: 'short' }) + date.slice(date.length-2) : date
+       console.log(dateObj)
+       console.log(date)
+       console.log(text)
+       console.log(todos)
+
+
+        let newTodo = new todo(text,descr,{priority,dueDate:date})
+        todos.add(newTodo);
+        createTodo(newTodo,todos);
+
+        document.body.removeChild(formBase);
+
+    }
+
+
+    
+    
+
 
 
 }
@@ -285,6 +329,9 @@ function createTodo(todo:todo,todos:TodosModel){
     let todoEle = makeHtmlElement("div",section,{classes:"todo-ele"})
 
     let banner  = makeHtmlElement("div",todoEle,{classes:"banner"})
+    if(todo.getOptions("priority")){
+        banner.style.backgroundColor = <string>todo.getOptions("priority");
+    }
 
     let check = makeHtmlElement("input",todoEle,{classes:"check",type:"checkbox"})
     let titlebox = makeToggableTextBox(todo.getTitle(),"title-"+todo.getId(),todoEle,"todo-name",(value:any)=>todo.setTitle(value))
@@ -292,6 +339,12 @@ function createTodo(todo:todo,todos:TodosModel){
 
 
     let stats = makeHtmlElement("div",todoEle,{classes:"stats"});
+    if(todo.getOptions("dueDate")){
+        let date = makeHtmlElement("div",stats,{text:<string>todo.getOptions("dueDate"),classes:"due-date"})
+    }
+    if(todo.getDescription()){
+        let descrBtn = makeHtmlElement("i",stats,{classes:"descr-btn bi bi-card-text"})
+    }
 
     let controls = makeHtmlElement("div",todoEle,{classes:"controls"});
     let editBtn = makeHtmlElement("i",controls,{classes:"edit bi bi-pen"});
@@ -424,7 +477,7 @@ class todo{
     private desciption:string;
     private id:string;
     private type:string;
-    constructor(title:string="",desciption:string="",options={}){
+    constructor(title:string="",desciption:string="",options:Partial<Options>={}){
         this.title = title;
         this.desciption = desciption;
         this.option = options;
@@ -456,7 +509,8 @@ class todo{
  table.add(
      new todo(
          "tired",
-         ""
+         "",
+         {dueDate:"Jul10"}
      )
  )
  table.show();
@@ -468,5 +522,3 @@ class todo{
  k.disabled  = true;
  document.body.appendChild(k);
 
-
-createForm()
