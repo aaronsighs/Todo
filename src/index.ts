@@ -6,9 +6,18 @@ import './css/styles.scss';
 // image.src = img1;
 // image.id = "test-img-0001"
 // document.body.appendChild(image);
-makeHtmlElement("div",document.body,{id:"header"})
-makeHtmlElement("div",document.body,{id:"side-bar"})
+let header = makeHtmlElement("div",document.body,{id:"header"})
+
+let sidebar = makeHtmlElement("div",document.body,{id:"side-bar"})
 makeHtmlElement("div",document.body,{id:"content"})
+let sidebarToggle = makeHtmlElement("i",header,{classes:"bi bi-list"});
+sidebarToggle.onclick =  (e)=>{
+    if (sidebar.style.width==="0%"){
+        sidebar.style.width = "10%";
+    }else{
+        sidebar.style.width = "0%";
+    }
+}
 // document.body.appendChild(image);
 
 
@@ -441,16 +450,6 @@ function enableTitleTextBox(){
 
 // }
 
-function replaceTitleWithTextBox(todos:TodosModel){
-    let textArea = createTextTitleArea(todos);
-    document.querySelector(`#title-${todos.getId()} h3`).replaceWith(textArea);
-}
-
-
-function replaceTextBoxWithTitle(id:string,text:string){
-
-}
-
 
 
 
@@ -487,12 +486,13 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
         let ttp  = makeHtmlElement("div",descrBtn,{classes:"tooltiptext",text:"has a description"})
         descrBtn.onclick = (e)=>{
 
-            if (document.querySelector(".info-box.com-btn")){
-                document.querySelector(".info-box").classList.add("fast")
-                document.querySelector(".info-box").classList.replace("new","old");
+            if (document.querySelector("#todo-"+todo.getId()+" .info-box.com-btn")){
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.add("fast")
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.replace("new","old");
+                let commentBtnRef = document.querySelector("#todo-"+todo.getId()+" .comment-btn")
+                    if (commentBtnRef){(<HTMLButtonElement>commentBtnRef).disabled = true;}
                 setTimeout(()=>{
-                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
-                    let commentBtnRef = document.querySelector(".comment-btn")
+                    todoEleWrapper.removeChild(document.querySelector("#todo-"+todo.getId()+" .info-box"));
                     if (commentBtnRef){
                         (<HTMLButtonElement>commentBtnRef).disabled = false;
                     }
@@ -502,12 +502,12 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
                
 
             }
-            else if (document.querySelector(".info-box.new")){
-                document.querySelector(".info-box").classList.remove("fast")
-                document.querySelector(".info-box").classList.replace("new","old");
+            else if (document.querySelector("#todo-"+todo.getId()+" .info-box.new")){
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.remove("fast")
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.replace("new","old");
                (<HTMLButtonElement>descrBtn).disabled = true;
                 setTimeout(()=>{
-                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
+                    todoEleWrapper.removeChild(document.querySelector("#todo-"+todo.getId()+" .info-box"));
                     (<HTMLButtonElement>descrBtn).disabled = false;
                 },1000);
                 
@@ -525,14 +525,17 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
         comment.onclick = (e)=>{
 
 
-            if (document.querySelector(".info-box.de-btn")){
-                document.querySelector(".info-box").classList.add("fast")
-                document.querySelector(".info-box").classList.replace("new","old");
+            if (document.querySelector("#todo-"+todo.getId()+" .info-box.de-btn")){
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.add("fast")
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.replace("new","old");
+                let descrBtnRef = document.querySelector("#todo-"+todo.getId()+" .descr-btn")
+                if (descrBtnRef){(<HTMLButtonElement>descrBtnRef).disabled = true;}
+                (<HTMLButtonElement>comment).disabled = true;
                 setTimeout(()=>{
-                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
-                    let commentBtnRef = document.querySelector(".descr-btn")
-                    if (commentBtnRef){
-                        (<HTMLButtonElement>commentBtnRef).disabled = false;
+                    todoEleWrapper.removeChild(document.querySelector("#todo-"+todo.getId()+" .info-box"));
+                   
+                    if (descrBtnRef){
+                        (<HTMLButtonElement>descrBtnRef).disabled = false;
                     }
                     let notes:Array<note> = <Array<note>>todo.getOptions("notes")
                 let message = notes[notes.length-1].message
@@ -541,12 +544,12 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
                
 
             }
-            else if (document.querySelector(".info-box.new")){
-                document.querySelector(".info-box").classList.remove("fast")
-                document.querySelector(".info-box").classList.replace("new","old");
+            else if (document.querySelector("#todo-"+todo.getId()+" .info-box.new")){
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.remove("fast")
+                document.querySelector("#todo-"+todo.getId()+" .info-box").classList.replace("new","old");
                (<HTMLButtonElement>comment).disabled = true;
                 setTimeout(()=>{
-                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
+                    todoEleWrapper.removeChild(document.querySelector("#todo-"+todo.getId()+" .info-box"));
                     (<HTMLButtonElement>comment).disabled = false;
 
                 },1000);
@@ -587,6 +590,7 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     }
     todo.setOptions("checkValue",!todo.getOptions("checkValue"))
 }
+console.log("hi im returing",todoEleWrapper);
 return todoEleWrapper
 }
 
