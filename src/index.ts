@@ -1,13 +1,15 @@
 import './css/styles.scss';
 
 
-import img1 from "./assets/images/test.png"
-let image:HTMLImageElement = new Image();
-image.src = img1;
-image.id = "test-img-0001"
-document.body.appendChild(image);
+// import img1 from "./assets/images/test.png"
+// let image:HTMLImageElement = new Image();
+// image.src = img1;
+// image.id = "test-img-0001"
+// document.body.appendChild(image);
+makeHtmlElement("div",document.body,{id:"header"})
+makeHtmlElement("div",document.body,{id:"side-bar"})
 makeHtmlElement("div",document.body,{id:"content"})
-document.body.appendChild(image);
+// document.body.appendChild(image);
 
 
 
@@ -123,9 +125,11 @@ function createEditForm(todos:TodosModel,todo:todo){
         redrawTodo(todos,todo);
         document.body.removeChild(formBase);
     };
-    drawComments(todo);
+   
 
 }
+drawCommentSection(todo);
+drawCommentInput(todo);
 }
 
 
@@ -137,21 +141,104 @@ function setCreateEditFormDefaults(todo:todo){
 }
 
 function redrawTodo(todos:TodosModel,todo:todo){
-    let htmlTodo = createTodo(todo,todos,false);
-    let oldTodo  = <HTMLElement>document.querySelector("#section-"+todos.getId() + " .todo-area .todo-ele")
+    let htmlTodoWrapper = createTodo(todo,todos,false);
+    let oldTodoWrapper  = <HTMLElement>document.querySelector("#todo-"+todo.getId())
     console.log("here")
-    oldTodo.replaceWith(htmlTodo);
+    oldTodoWrapper.replaceWith(htmlTodoWrapper);
 
 }
 
 
-
-function drawComments(todo:todo){
+function drawCommentSection(todo:todo){
     let formContent = <HTMLElement>document.querySelector(".form-module .content")
-    let commentSection = makeHtmlElement("div",formContent,{classes:"comment-section"});
-    (<Array<note>>todo.getOptions("notes")).forEach( (note:note)=>{
-        makeHtmlElement("div",commentSection,{classes:"note",id:note.id,text:note.message})
-     } )
+    let commentSection = makeHtmlElement("div",formContent,{classes:"comment-section",children:[["hr",{}]]});
+    drawComments(commentSection,todo)
+}
+
+
+function deleteHTMLComment(id:string){
+    let commentSection = document.querySelector(".comment-section")
+    commentSection.childNodes.forEach( (comment:HTMLElement) => {
+        if (id===comment.id){
+            commentSection.removeChild(comment)
+        }
+    });
+}
+
+function drawCommentInput(todo:todo){
+    let formContent = <HTMLElement>document.querySelector(".form-module .content")
+    let inputSection= makeHtmlElement("div",formContent,{classes:"comment-input", children:[["hr",{}]]})
+    let commentSection = <HTMLElement>document.querySelector(" .form-module .content .comment-section");
+    let textBox = <HTMLInputElement>makeHtmlElement("input",inputSection,{id:"message-input"}); // add a keypress on enter ? maybe ?
+    let textPush = makeHtmlElement("i",inputSection,{classes:"bi bi-arrow-right-square-fill"})
+    textBox.onkeypress = (e) =>{
+        if (e.key === "Enter"){
+            if (textBox.value){
+                console.log(textBox.value,"here")
+                console.log(document.querySelector("#message-input"))
+                let note = todo.addNote(textBox.value);
+                console.log(note);
+                drawComment(commentSection,note,todo);
+                textBox.value = "";
+            }
+
+        }
+    }
+    textPush.onclick = ()=>{
+        if (textBox.value){
+            console.log(textBox.value,"here")
+            console.log(document.querySelector("#message-input"))
+            let note = todo.addNote(textBox.value);
+            console.log(note);
+            drawComment(commentSection,note,todo);
+            textBox.value = "";
+        }
+    }
+    
+
+
+}
+
+
+function getTimeFromTimeBasedId(id:string){
+    console.log(id)
+    let date = new Date(+id)
+    console.log(date);
+    return date.toLocaleString('default', { month: 'short' ,day:'2-digit'})  + " " + `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    
+
+}
+
+function drawComment(section:HTMLElement,note:note,todo:todo){
+    console.log(note.id)
+
+    makeHtmlElement("div",section,{
+        classes:"note",
+        id:note.id,
+        text:note.message,
+        children:[["i",
+        {
+            classes:"bi bi-backspace-reverse-fill del-comment",
+            click: (e:any)=>{
+                todo.deleteNote(note.id);
+                deleteHTMLComment(note.id);
+            }
+        }
+    ],["div",
+    {classes:"comment-time",
+     text:getTimeFromTimeBasedId(note.id)}
+    ]
+]
+
+})
+
+}
+
+
+function drawComments(section:HTMLElement,todo:todo){
+
+    if (todo.getOptions("notes"))
+    (<Array<note>>todo.getOptions("notes")).forEach( (note:note)=>{drawComment(section,note,todo)} )
 
 }
 
@@ -377,7 +464,9 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     let section = <HTMLElement>document.querySelector("#section-"+todos.getId() + " .todo-area")
 
     if (!addToDom){section=null}
-    let todoEle = makeHtmlElement("div",section,{classes:"todo-ele"})
+    let todoEleWrapper = makeHtmlElement("div",section,{classes:"todo-ele-wrapper"})
+    let todoEle = makeHtmlElement("div",todoEleWrapper,{classes:"todo-ele"})
+    todoEleWrapper.id = "todo-"+todo.getId();
 
     let banner  = makeHtmlElement("div",todoEle,{classes:"banner"})
     if(todo.getOptions("priority")){
@@ -396,13 +485,84 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     if(todo.getDescription()){
         let descrBtn = makeHtmlElement("i",stats,{classes:"descr-btn bi bi-card-text tooltip"})
         let ttp  = makeHtmlElement("div",descrBtn,{classes:"tooltiptext",text:"has a description"})
-    }
-    if((<Array<string>>todo.getOptions("notes"))){
-        let length = (<Array<string>>todo.getOptions("notes")).length
-        let comment = makeHtmlElement("i",stats,{classes:"descr-btn bi bi-chat-right-quote-fill tooltip"})
-        let ttp2  = makeHtmlElement("div",comment,{classes:"tooltiptext",text:""+length+" comments"})
+        descrBtn.onclick = (e)=>{
 
+            if (document.querySelector(".info-box.com-btn")){
+                document.querySelector(".info-box").classList.add("fast")
+                document.querySelector(".info-box").classList.replace("new","old");
+                setTimeout(()=>{
+                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
+                    let commentBtnRef = document.querySelector(".comment-btn")
+                    if (commentBtnRef){
+                        (<HTMLButtonElement>commentBtnRef).disabled = false;
+                    }
+                    let descriptionBox = makeHtmlElement("div",todoEleWrapper,{classes:"info-box new fast de-btn",children:[["div",{text:"Description: "}],["div",{text:todo.getDescription(),classes:"descr-txt"}]]});
+
+                },250);
+               
+
+            }
+            else if (document.querySelector(".info-box.new")){
+                document.querySelector(".info-box").classList.remove("fast")
+                document.querySelector(".info-box").classList.replace("new","old");
+               (<HTMLButtonElement>descrBtn).disabled = true;
+                setTimeout(()=>{
+                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
+                    (<HTMLButtonElement>descrBtn).disabled = false;
+                },1000);
+                
+
+            }
+            else{
+                let descriptionBox = makeHtmlElement("div",todoEleWrapper,{classes:"info-box new de-btn ",children:[["div",{text:"Description: "}],["div",{text:todo.getDescription(),classes:"descr-txt"}]]});
+             }    
+             }
     }
+    if((<Array<note>>todo.getOptions("notes"))){
+        let length = (<Array<note>>todo.getOptions("notes")).length
+        let comment = makeHtmlElement("i",stats,{classes:"comment-btn bi bi-chat-right-quote-fill tooltip"})
+        let ttp2  = makeHtmlElement("div",comment,{classes:"tooltiptext",text:""+length+" comments"})
+        comment.onclick = (e)=>{
+
+
+            if (document.querySelector(".info-box.de-btn")){
+                document.querySelector(".info-box").classList.add("fast")
+                document.querySelector(".info-box").classList.replace("new","old");
+                setTimeout(()=>{
+                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
+                    let commentBtnRef = document.querySelector(".descr-btn")
+                    if (commentBtnRef){
+                        (<HTMLButtonElement>commentBtnRef).disabled = false;
+                    }
+                    let notes:Array<note> = <Array<note>>todo.getOptions("notes")
+                let message = notes[notes.length-1].message
+                    let descriptionBox = makeHtmlElement("div",todoEleWrapper,{classes:"info-box new fast com-btn",children:[["div",{text:"LastMessage: "}],["div",{text:message,classes:"descr-txt"}]]});
+                },250);
+               
+
+            }
+            else if (document.querySelector(".info-box.new")){
+                document.querySelector(".info-box").classList.remove("fast")
+                document.querySelector(".info-box").classList.replace("new","old");
+               (<HTMLButtonElement>comment).disabled = true;
+                setTimeout(()=>{
+                    todoEleWrapper.removeChild(document.querySelector(".info-box"));
+                    (<HTMLButtonElement>comment).disabled = false;
+
+                },1000);
+                
+                
+
+            }
+            else{
+                let notes:Array<note> = <Array<note>>todo.getOptions("notes")
+                let message = notes[notes.length-1].message
+                let descriptionBox = makeHtmlElement("div",todoEleWrapper,{classes:"info-box new com-btn",children:[["div",{text:"Last Message: "}],["div",{text:message,classes:"descr-txt"}]]});
+             }    
+             }
+    }
+
+    
 
     let controls = makeHtmlElement("div",todoEle,{classes:"controls"});
     let editBtn = makeHtmlElement("i",controls,{classes:"edit bi bi-pen"});
@@ -413,8 +573,8 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
 
     let delBtn = makeHtmlElement("i",controls,{classes:"delete bi bi-trash2-fill"});
     delBtn.onclick = ()=>{ 
-        let parent = document.querySelector(`#section-${todos.getId() + " .todo-area"}`);
-        parent.removeChild(todoEle);
+        let parent = document.querySelector(`#section-${todos.getId() + " .todo-area "}`);
+        parent.removeChild(todoEleWrapper);
         todos.removeByTodo(todo);
     }
     check.onclick =(e:any)=> {
@@ -427,7 +587,7 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     }
     todo.setOptions("checkValue",!todo.getOptions("checkValue"))
 }
-return todoEle
+return todoEleWrapper
 }
 
 
@@ -559,6 +719,7 @@ class todo{
         obj[name] = value;
     }
 
+
     getOptions(name:keyof Options){return this.option[name];}
     getTitle(){ return this.title;}
     getDescription(){return this.desciption;}
@@ -574,9 +735,25 @@ class todo{
  
         this.desciption=text;}
 
+
+    addNote(message:string){
+        let note = {
+            message,
+            id:""+new Date().getTime(),
+        }
+        if (!this.option.notes){
+            this.option.notes = [note]
+        }else{
+            this.option.notes.push(note)
+        }
+        return note
+
+    }
+    deleteNote(id:string){
+        this.option.notes = this.option.notes.filter(note=>note.id !==id)
+    }
+
 }
-
-
 
 
  let table = new TodosModel("thoughts");
@@ -589,12 +766,15 @@ class todo{
      }
      )
  )
+ 
  table.show();
+ console.log("descrp: ",table.getTodos()[0].getDescription())
 
  let allTodos:Array<TodosModel> = [table];
 
  onTodosView(table);
- let k = document.createElement("input");
- k.disabled  = true;
- document.body.appendChild(k);
 
+
+
+ let d = new Date();
+ console.log(d.getTime(),new Date(d.getTime()))

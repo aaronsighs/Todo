@@ -15,13 +15,56 @@
     }
 }
 
+body,html{
+    padding:0;
+    margin:0;
+    position: relative;
+    height:100%;
+    width:100%;
+    overflow:hidden;
+}
+
+body{
+    // grid-template-columns: 10% auto;
+
+}
+
+#header{
+    background-color: red;
+    width:100%;
+    height:50px;
+}
+
+#side-bar{
+    background-color: green;
+    height:100%;
+    width:10%;
+    display: inline-block;
+    float:left;
+    
+}
+#side-bar:hover{
+    width:0%;
+
+}
+
+#content{
+    display: inline-block;
+    height:100%;
+    widtH:90%;
+
+}
+
 .title {
     text-align: center;
     width:25%;
+    margin: 0 37.5%;
     padding:5px
 }
 .title input:read-only{
-     color:blue;
+     color:black;
+     text-shadow: 2px 1px 1px rgba(8, 8, 8, 0.324);
+     font-size: 1.2rem;
 }
 .title i{
     font-size: .7rem;
@@ -44,9 +87,18 @@
     border:1px solid black;
     position: relative;
     box-shadow: 1px 1px 1px black;
-    width:33%;
+    width:100%;
+    
     min-width: 120px;
+    border-radius: 2px;
 
+}
+
+.todo-ele-wrapper{
+    position: relative;
+    width:80%;
+    margin:10px 10%;
+    
 }
 .todo-ele:hover{
     transform: scale(1.005);
@@ -80,6 +132,11 @@
     position: absolute;
     right:0;
     top:0;
+}
+.slide-down{
+    transition:height .5s;
+  height:50px;
+  overflow:hidden;
 }
 .check{
     float:left;
@@ -123,10 +180,10 @@
     text-align: center;
     font-size: .85rem;
     font-weight: 700;
-    height: 20px;
+    max-height: 30px;
     margin: 0;
     padding: 0;
-    width: 80px;
+    width: 200px;
     padding-top: 2px;
 }
 .banner{
@@ -147,11 +204,14 @@
 
 .stats,.controls,.controls >*{
     display: inline-block;
+    
 }
+.stats > *{margin-left:10px;}
 
 .create-new-todo{
     width:33%;
     border:1px solid black;
+    margin: 5px 33%;
 }
 .push-new{
     display: inline-block;
@@ -188,15 +248,9 @@ i.open-form{
     z-index:65;
     position: absolute;
     border-radius: 5px;
-}
-body,html{
-    padding:0;
-    margin:0;
-    position: relative;
-    height:100%;
-    width:100%;
     overflow:hidden;
 }
+
 
 .due-date{
     background-color:rgba(4, 255, 29, 0.558);
@@ -259,4 +313,120 @@ body,html{
 
   .descr-btn{
   
+  }
+
+ 
+
+
+.info-box{
+  overflow:hidden;
+  width:100%;
+  height:0;
+  background-color: rgba(236, 236, 236, 0.648);
+  border: 1px solid black;
+  border-top:0px;
+  border-left: 0px;
+  border-right: 0px;
+  z-index:70;
+}
+
+.info-box.new{
+    animation: slide-dwn 1s forwards;
+}
+.info-box.old{
+    animation: slide-up 1s forwards;
+}
+
+.info-box.new.fast{
+    animation: slide-dwn .25s forwards;
+}
+.info-box.old.fast{
+    animation: slide-up .25s forwards;
+}
+
+.info-box h3{
+    font-size:.7rem;
+    margin:0;
+    padding:0;
+}
+.descr-txt{
+    font-size: .85rem;
+}
+
+
+@keyframes slide-up {
+    0%{
+        height:30px;
+    }
+    100%{
+        height:0px;
+    }
+    
+}
+
+@keyframes slide-dwn {
+    0%{
+        height:0px;
+    }
+    100%{
+        height:30px;
+    }
+    
+}
+  .note{
+      max-width:50%;
+      background-color: rgb(241, 241, 241);
+      border-radius: 1px;
+      box-shadow: 1px 1px 3px;
+      text-align: center;
+      position: relative;
+      margin: 5px;
+      width:25%;
+      display: inline-block;
+      padding:5px;
+      height:fit-content;
+      word-wrap: break-word;
+  }
+  .del-comment{
+      float:right;
+  }
+  .del-comment:hover{
+      color:rgba(22, 22, 22, 0.51);
+      transform:scale(1.075);
+  }
+  .comment-input{
+      position: absolute;
+      bottom:0;
+      width:100%;
+      
+  }
+  .comment-input input{
+      width:60%
+  }
+
+  .comment-section{
+      overflow: scroll;
+      height:70%;
+  }
+
+  .note:hover .comment-time{
+      visibility:visible;
+      text-shadow: 1px 1px 1px gray;
+  }
+  .note:hover {
+    color:gray
+  }
+  .note:hover i{
+      color:rgb(77, 77, 77);
+  }
+  .note:hover i:hover{
+      color:rgb(0, 0, 0);
+  }
+  .comment-time{
+      visibility: hidden;
+      position: absolute;
+      right:0;
+      font-size: .55rem;
+      bottom:-10px;
+      color:rgba(28, 100, 255, 0.876);
   }
