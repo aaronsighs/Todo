@@ -41,17 +41,17 @@ body{
     width:10%;
     display: inline-block;
     float:left;
+    overflow: hidden;
     
 }
-#side-bar:hover{
-    width:0%;
 
-}
 
 #content{
     display: inline-block;
     height:100%;
-    widtH:90%;
+    max-width:100%;
+    min-width:90%;
+    
 
 }
 

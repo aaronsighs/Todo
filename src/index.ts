@@ -9,13 +9,15 @@ import './css/styles.scss';
 let header = makeHtmlElement("div",document.body,{id:"header"})
 
 let sidebar = makeHtmlElement("div",document.body,{id:"side-bar"})
-makeHtmlElement("div",document.body,{id:"content"})
+let content = makeHtmlElement("div",document.body,{id:"content"})
 let sidebarToggle = makeHtmlElement("i",header,{classes:"bi bi-list"});
 sidebarToggle.onclick =  (e)=>{
     if (sidebar.style.width==="0%"){
         sidebar.style.width = "10%";
+        content.style.width = "90%";
     }else{
         sidebar.style.width = "0%";
+        content.style.width = "100%";
     }
 }
 // document.body.appendChild(image);
@@ -598,7 +600,7 @@ return todoEleWrapper
 
 
 var onTodosView = (function(currentTodos:TodosModel){
-
+    clearContent();
     makeTitle("#content",currentTodos)
     let section = makeHtmlElement("div",document.querySelector("#content"),{classes:"todo-list",id:`section-${currentTodos.getId()}`})
     let todoArea = makeHtmlElement("div",section,{classes:"todo-area"});
@@ -770,13 +772,39 @@ class todo{
      }
      )
  )
+ let table2 = new TodosModel("Foods");
+ table2.add(
+    new todo(
+        "hi",
+        "hi",
+        {dueDate:"Jul10",
+         notes:[{message:"im going there soon!",id:"note-002"}]
+    }
+    )
+)
  
  table.show();
  console.log("descrp: ",table.getTodos()[0].getDescription())
 
- let allTodos:Array<TodosModel> = [table];
+ let allTodos:Array<TodosModel> = [table,table2];
+
+
+ function clearContent(){
+     let content = document.querySelector("#content");
+     while(content.lastChild){
+         content.removeChild(content.lastChild)
+     }
+
+ }
+ 
 
  onTodosView(table);
+ allTodos.forEach( todos => {
+    let htmlTodos = makeHtmlElement("div",sidebar,{text:todos.getName()})
+    htmlTodos.onclick = (e) =>{onTodosView(todos)}
+ });
+
+ 
 
 
 
