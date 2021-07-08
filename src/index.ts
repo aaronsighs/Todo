@@ -197,7 +197,8 @@ function redrawTodo(todos:TodosModel,todo:todo){
 
 function drawCommentSection(todo:todo){
     let formContent = <HTMLElement>document.querySelector(".form-module .content")
-    let commentSection = makeHtmlElement("div",formContent,{classes:"comment-section",children:[["hr",{}]]});
+    makeHtmlElement("hr",document.querySelector(".form-module"));
+    let commentSection = makeHtmlElement("div",formContent,{classes:"comment-section"});
     drawComments(commentSection,todo)
 }
 
@@ -212,9 +213,11 @@ function deleteHTMLComment(id:string){
 }
 
 function drawCommentInput(todo:todo){
+    
     let formContent = <HTMLElement>document.querySelector(".form-module .content")
-    let inputSection= makeHtmlElement("div",formContent,{classes:"comment-input", children:[["h3",{text:"Leave a Comment:"}],["hr",{}]]})
+    let inputSection= makeHtmlElement("div",formContent,{classes:"comment-input", children:[["hr",{}]]})
     let commentSection = <HTMLElement>document.querySelector(" .form-module .content .comment-section");
+    let label = <HTMLInputElement>makeHtmlElement("label",inputSection,{text:"Message: "}); 
     let textBox = <HTMLInputElement>makeHtmlElement("input",inputSection,{id:"message-input"}); // add a keypress on enter ? maybe ?
     let textPush = makeHtmlElement("i",inputSection,{classes:"bi bi-arrow-right-square-fill"})
     textBox.onkeypress = (e) =>{
