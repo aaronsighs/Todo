@@ -7,17 +7,24 @@ import './css/styles.scss';
 // image.id = "test-img-0001"
 // document.body.appendChild(image);
 let header = makeHtmlElement("div",document.body,{id:"header"})
+let wrapper = makeHtmlElement("div",document.body,{id:"main-wrapper"})
 
-let sidebar = makeHtmlElement("div",document.body,{id:"side-bar"})
-let content = makeHtmlElement("div",document.body,{id:"content"})
+let sidebar = makeHtmlElement("div",wrapper,{id:"side-bar"})
+let content = makeHtmlElement("div",wrapper,{id:"content"})
 let sidebarToggle = makeHtmlElement("i",header,{classes:"bi bi-list"});
 sidebarToggle.onclick =  (e)=>{
-    if (sidebar.style.width==="0%"){
-        sidebar.style.width = "10%";
-        content.style.width = "90%";
+    if (sidebar.classList.contains("slide-in1")){
+        sidebar.classList.remove("slide-in1")
+        sidebar.classList.add("slide-out1")
+        // content.classList.remove("slide-out2")
+        // content.classList.add("slide-in2")
+        //content.style.width = "90%";
     }else{
-        sidebar.style.width = "0%";
-        content.style.width = "100%";
+        sidebar.classList.remove("slide-out1")
+        sidebar.classList.add("slide-in1")
+        // content.classList.remove("slide-in2")
+        // content.classList.add("slide-out2")
+       // content.style.width = "100%";
     }
 }
 // document.body.appendChild(image);
@@ -90,8 +97,29 @@ function changeText(id:string,target:HTMLInputElement){
 
 
 function newTodoNameText(id:string):string{
-   return (<HTMLInputElement>document.querySelector("#section-"+id + " .make-new .create-new-todo input")).value;
+   let newInput = (<HTMLInputElement>document.querySelector("#section-"+id + " .make-new .create-new-todo input"));
+   if (!newInput.value){
+       return newInput.placeholder;
+   }
+   return newInput.value;
     
+
+}
+
+
+function resetNewTodoNameText(id:string){
+    let newInput = (<HTMLInputElement>document.querySelector("#section-"+id + " .make-new .create-new-todo input"));
+    newInput.value = "";
+}
+
+
+
+function addNewToDo(todos:TodosModel){
+    let todoName:string = newTodoNameText(todos.getId())
+    resetNewTodoNameText(todos.getId())
+    let newTodo = new todo(todoName);
+    todos.add(newTodo);
+    createTodo(newTodo,todos);
 
 }
 
@@ -104,11 +132,16 @@ function drawMakeNew(todos:TodosModel){
     let fastCreate = makeHtmlElement("input",createBox,{placeholder:"new todo",value:"new todo title", classes:"title"})
     let push       = makeHtmlElement("i",createBox,{classes:"push-new ",text:"quick create"})
     push.addEventListener("click", (e)=> {
-        let todoName:string = newTodoNameText(todos.getId())
-        let newTodo = new todo(todoName);
+        addNewToDo(todos)
+        e.stopPropagation()
+        e.stopImmediatePropagation()
 
-        todos.add(newTodo);
-        createTodo(newTodo,todos);
+    },true)
+    fastCreate.addEventListener("keypress", (e)=> {
+        if (e.key!=="Enter"){
+            return
+        }
+        addNewToDo(todos)
         e.stopPropagation()
         e.stopImmediatePropagation()
 
@@ -378,7 +411,12 @@ function makeToggableTextBox(text:string,id:string,parentEle:HTMLElement=null,cl
 
 
 function makeTitle(eleSel:string,todos:TodosModel,listeners:Array<Listener> = []  ) {
-    makeToggableTextBox(todos.getName(),todos.getId(),document.querySelector(eleSel),"title",(value:any)=>todos.setName(value))
+    makeToggableTextBox(todos.getName(),todos.getId(),document.querySelector(eleSel),"title",(value:any)=>{
+        todos.setName(value)
+        console.log("i am here trying to change sidebar")
+        changeNameSidebar(todos.getId(),value)
+        
+    })
 
 
 //     makeHtmlElement("div",document.querySelector(eleSel),
@@ -603,8 +641,9 @@ var onTodosView = (function(currentTodos:TodosModel){
     clearContent();
     makeTitle("#content",currentTodos)
     let section = makeHtmlElement("div",document.querySelector("#content"),{classes:"todo-list",id:`section-${currentTodos.getId()}`})
-    let todoArea = makeHtmlElement("div",section,{classes:"todo-area"});
     let makeNewArea = makeHtmlElement("div",section,{classes:"make-new"});
+    let todoArea = makeHtmlElement("div",section,{classes:"todo-area"});
+    
     drawMakeNew(currentTodos)
     currentTodos.getTodos().forEach(todo=>{
         createTodo(todo,currentTodos);
@@ -789,6 +828,16 @@ class todo{
  let allTodos:Array<TodosModel> = [table,table2];
 
 
+ function changeNameSidebar(id:string,value:string){
+     console.log(id)
+     
+    let  sidebarName = document.querySelector("#sidebarTodoName-"+id)
+    if (!sidebarName){return }
+    sidebarName.textContent = value;
+     
+ }
+
+
  function clearContent(){
      let content = document.querySelector("#content");
      while(content.lastChild){
@@ -796,13 +845,34 @@ class todo{
      }
 
  }
+
+
+
  
 
  onTodosView(table);
+ let sidebarTitles = makeHtmlElement("div",null,{classes:"side-bar-titles"})
  allTodos.forEach( todos => {
-    let htmlTodos = makeHtmlElement("div",sidebar,{text:todos.getName()})
+    let htmlTodos = makeHtmlElement("div",sidebarTitles,{text:todos.getName(),id:"sidebarTodoName-"+todos.getId()})
     htmlTodos.onclick = (e) =>{onTodosView(todos)}
  });
+ let newTodosInput = makeHtmlElement("div",sidebar,{ classes:"make-new-todos",children:
+[["input",{}],
+]});
+
+
+let newTodosBtn = makeHtmlElement("i",newTodosInput, {classes:"bi bi-plus-square"})
+newTodosBtn.onclick = (e)=>{
+    let input = <HTMLInputElement>document.querySelector(".make-new-todos input");
+    console.log(input.value)
+    if (!input.value){return }
+    
+    let todos = new TodosModel(input.value);
+    allTodos.push(todos)
+    let htmlTodos = makeHtmlElement("div",sidebarTitles,{text:todos.getName(),id:"sidebarTodoName-"+todos.getId()})
+    htmlTodos.onclick = (e) =>{onTodosView(todos)}
+}
+sidebar.append(sidebarTitles);
 
  
 

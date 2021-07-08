@@ -1,4 +1,16 @@
+:root{
+    --side-bar-width:max(min(90px,7%),10%);
+}
+
+
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
+
+
+
+
+
+
+
 #test-img-0001 {
     animation: spin 3s infinite;
     margin: 25% 50%;
@@ -21,11 +33,19 @@ body,html{
     position: relative;
     height:100%;
     width:100%;
-    overflow:hidden;
+    $w :10%;
+    overflow: hidden;
+
+}
+#main-wrapper{
+    height:calc(100% - 50px);
+    position:relative;
+    display: flex;
 }
 
-body{
+body::after{
     // grid-template-columns: 10% auto;
+    display: flex;
 
 }
 
@@ -35,13 +55,86 @@ body{
     height:50px;
 }
 
+
 #side-bar{
     background-color: green;
     height:100%;
-    width:10%;
+    width:var(--side-bar-width);
     display: inline-block;
-    float:left;
     overflow: hidden;
+    text-overflow: clip;
+    text-align: center;
+}
+.test{
+    animation: name duration timing-function delay iteration-count direction fill-mode;
+}
+
+.slide-in1{
+    animation: slide-in .65s forwards;
+}
+.slide-out1{
+    animation: slide-out .85s forwards;
+    background-color: rgb(113, 179, 236);
+}
+
+.slide-in2{
+    animation: slide-in2 .65s forwards;
+}
+.slide-out2{
+    animation: slide-out2 .85s forwards;
+}
+
+
+@keyframes slide-in2 {
+    0%{
+        width:100%;
+    }
+    50%{
+        width:90%
+    }
+    100%{
+        width:90%
+
+    }
+    
+}
+@keyframes slide-out2 {
+    0%{
+        width:90%
+    
+    }
+    50%{
+        width:90%
+    }
+    100%{
+        width:100%
+
+    }
+    
+}
+
+
+
+
+@keyframes slide-in {
+    0%{
+        width:var(--side-bar-width);
+    }
+    100%{
+        width:0%
+
+    }
+    
+}
+@keyframes slide-out {
+    0%{
+        width:0%
+    
+    }
+    100%{
+        width:var(--side-bar-width);
+
+    }
     
 }
 
@@ -50,7 +143,9 @@ body{
     display: inline-block;
     height:100%;
     max-width:100%;
-    min-width:90%;
+    flex-grow: 2;
+    overflow: hidden;
+    
     
 
 }
@@ -82,6 +177,17 @@ body{
     text-decoration: none;
 }
 
+.todo-area{
+    overflow-y: scroll;
+    max-height: 500px
+
+}
+
+.todo-list{
+    position: relative;
+    overflow:hidden;
+
+}
 
 .todo-ele{
     border:1px solid black;
@@ -429,4 +535,11 @@ i.open-form{
       font-size: .55rem;
       bottom:-10px;
       color:rgba(28, 100, 255, 0.876);
+  }
+
+  .make-new-todos input{
+      background-color: rgba(255, 255, 255, 0.021);
+      outline: 0px;
+      border:0px;
+      border-bottom: 1px solid black;
   }
