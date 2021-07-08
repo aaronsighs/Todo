@@ -160,6 +160,7 @@ function createEditForm(todos:TodosModel,todo:todo){
     setCreateEditFormDefaults(todo)
     let formBase = <HTMLElement>document.querySelector(".form-module");
     let form = <HTMLElement>document.querySelector(".form-module form");
+    document.querySelector("form button").textContent = "Update";
     form.onsubmit = (e)=>{
         e.preventDefault()
         let formData = getFormData();
@@ -180,7 +181,7 @@ drawCommentInput(todo);
 
 function setCreateEditFormDefaults(todo:todo){
     (<HTMLInputElement>document.querySelector("#inputTitle")).value = todo.getTitle();
-    (<HTMLInputElement>document.querySelector("#priority")).value = <string>todo.getOptions("priority");
+    (<HTMLInputElement>document.querySelector("#priority")).value = <string>todo.getOptions("priority") ? <string>todo.getOptions("priority") :"#c6c6c6" ;
     (<HTMLInputElement>document.querySelector("#description")).value = <string>todo.getDescription();
 
 }
@@ -212,7 +213,7 @@ function deleteHTMLComment(id:string){
 
 function drawCommentInput(todo:todo){
     let formContent = <HTMLElement>document.querySelector(".form-module .content")
-    let inputSection= makeHtmlElement("div",formContent,{classes:"comment-input", children:[["hr",{}]]})
+    let inputSection= makeHtmlElement("div",formContent,{classes:"comment-input", children:[["h3",{text:"Leave a Comment:"}],["hr",{}]]})
     let commentSection = <HTMLElement>document.querySelector(" .form-module .content .comment-section");
     let textBox = <HTMLInputElement>makeHtmlElement("input",inputSection,{id:"message-input"}); // add a keypress on enter ? maybe ?
     let textPush = makeHtmlElement("i",inputSection,{classes:"bi bi-arrow-right-square-fill"})
@@ -311,18 +312,23 @@ function createForm(todos:TodosModel,allowComments=false){
         }
     },true)
     let content = makeHtmlElement("div",formBase,{classes:"content"})
-    let form    = makeHtmlElement("form",content);
-    let titleLabel = makeHtmlElement("label",form,{name:"title",text:"Title:"})
-    let title = <HTMLInputElement>makeHtmlElement("input",form,{name:"title",placeholder:"newTodo",id:"inputTitle"})
+    let form    = makeHtmlElement("form",content,{});
+    let formdiv1 = makeHtmlElement("div",form,{})
+    let formdiv2 = makeHtmlElement("div",form,{})
+    let formdiv3 = makeHtmlElement("div",form,{})
+    let formdiv4 = makeHtmlElement("div",form,{})
+    let formdiv5 = makeHtmlElement("div",form,{classes:"btn-div"})
+    let titleLabel = makeHtmlElement("label",formdiv1,{name:"title",text:"Title:"})
+    let title = <HTMLInputElement>makeHtmlElement("input",formdiv1,{name:"title",placeholder:"newTodo",id:"inputTitle"})
     title.required = true;
-    let descrLabel = makeHtmlElement("label",form,{name:"descr",text:"Description:"})
-    let descr = <HTMLInputElement>makeHtmlElement("textArea",form,{name:"descr",placeholder:"description...",id:"description"})
+    let descrLabel = makeHtmlElement("label",formdiv2,{name:"descr",text:"Description:"})
+    let descr = <HTMLInputElement>makeHtmlElement("textArea",formdiv2,{name:"descr",placeholder:"description...",id:"description"})
     descr.style.resize = "none";
-    let dateLabel = makeHtmlElement("label",form,{name:"descr",text:"Date:"})
-    let date = <HTMLInputElement>makeHtmlElement("input",form,{name:"date",type:"date",id:"date"})
-    let priorityLabel = makeHtmlElement("label",form,{name:"priority",text:"Priority:"})
-    let priority = <HTMLInputElement>makeHtmlElement("input",form,{name:"priority",type:"color",value:"#ffff00",id:"priority"})
-    let createBtn = <HTMLInputElement>makeHtmlElement("button",form,{text:"Create"})
+    let dateLabel = makeHtmlElement("label",formdiv3,{name:"descr",text:"Date:"})
+    let date = <HTMLInputElement>makeHtmlElement("input",formdiv3,{name:"date",type:"date",id:"date"})
+    let priorityLabel = makeHtmlElement("label",formdiv4,{name:"priority",text:"Priority:"})
+    let priority = <HTMLInputElement>makeHtmlElement("input",formdiv4,{name:"priority",type:"color",value:"#c6c6c6",id:"priority"})
+    let createBtn = <HTMLInputElement>makeHtmlElement("button",formdiv5,{text:"Create"})
     form.onsubmit = (e)=>{
         e.preventDefault()
         // let newTodo = new todo(todoName);

@@ -485,6 +485,56 @@ i.open-form{
   
   }
 
+  form{
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-rows: auto auto 2fr;
+
+  }
+  form div{
+    
+      margin:2%;
+      text-align: center;
+  }
+
+  .btn-div{
+      width:200%;
+      align-items: center;
+    
+  }
+  .btn-div button{
+    border: 0px;
+    box-shadow: 0px 0px 2px rgb(132, 130, 130);
+    padding:1%;
+
+  }
+  .btn-div button:hover{
+
+    box-shadow: 0px 0px 4px rgb(132, 130, 130);
+    transform: scale(1.1);
+    cursor: pointer;
+
+
+  }
+
+  form div input, form div textarea{
+      border:0px;
+      border-bottom: 2px solid black;
+      background-color: rgba(231, 231, 231, 0.427);
+  }
+
+  form div input::selection, form div textarea::selection,form div input:focus, form div textarea:focus{
+    border:0px;
+    border-bottom: 2px solid rgb(94, 149, 207);
+    background-color: rgba(231, 231, 231, 0.538);
+    outline:0px;
+}
+
+  #description{
+      width:50%;
+      height:100%;
+  }
+
  
 
 
