@@ -1,5 +1,5 @@
 :root{
-    --side-bar-width:max(min(90px,7%),10%);
+    --side-bar-width:max(200px,15%);
 }
 
 
@@ -35,8 +35,14 @@ body,html{
     width:100%;
     $w :10%;
     overflow: hidden;
+    min-width:260px;
 
 }
+
+
+
+
+
 #main-wrapper{
     height:calc(100% - 50px);
     position:relative;
@@ -50,14 +56,16 @@ body::after{
 }
 
 #header{
-    background-color: red;
+    background-color: rgb(105, 179, 224);
     width:100%;
     height:50px;
+    font-size: 1.5rem;
 }
 
 
+
 #side-bar{
-    background-color: green;
+    background-color: rgb(176, 215, 224);
     height:100%;
     width:var(--side-bar-width);
     display: inline-block;
@@ -65,6 +73,7 @@ body::after{
     text-overflow: clip;
     text-align: center;
 }
+
 .test{
     animation: name duration timing-function delay iteration-count direction fill-mode;
 }
@@ -178,7 +187,7 @@ body::after{
 }
 
 .todo-area{
-    overflow-y: scroll;
+
     max-height: 500px
 
 }
@@ -187,6 +196,10 @@ body::after{
     position: relative;
     overflow:hidden;
 
+}
+
+.todo-ele-inner{
+    display: flex;
 }
 
 .todo-ele{
@@ -208,7 +221,7 @@ body::after{
 }
 .todo-ele:hover{
     transform: scale(1.005);
-    box-shadow: 2px 2px 8px black;
+    box-shadow: 2px 2px 1px black;
 }
 
 .todo-ele .descr input{
@@ -217,7 +230,7 @@ body::after{
     font-size: .7rem;
 }
 
-.todo-name input{
+.create-new-todo input{
     outline: 0px;
     border: 0px;
     text-align: left;
@@ -229,6 +242,24 @@ body::after{
     padding-top: 2px;
     display: inline-block;
     max-width: 75%;
+    width:30%;
+
+}
+
+.todo-area .todo-name input{
+    outline: 0px;
+    border: 0px;
+    text-align: left;
+    font-size: .7rem;
+    font-weight: 600;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    padding-top: 2px;
+    display: inline-block;
+    max-width: 75%;
+    width:80%;
+    
 
 }
 .tg-txt{
@@ -263,10 +294,10 @@ body::after{
 .todo-name i{
     font-size: .6rem;
 }
-.todo-name{
+.todo-area .todo-name{
     display: inline-block;
-    max-width: 33%;
     overflow: hidden;
+    flex-grow:2;
 }
 
 .title h3 {
@@ -279,7 +310,25 @@ body::after{
     color:red;
 }
 
-.title input {
+.title.todos{
+    width:90%;
+    margin:auto 2.5%;
+}
+
+.title.todos input{
+    outline: 0px;
+    border: 0px;
+    text-align: center;
+    font-size: .85rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    width: 80%;
+    padding-top: 2px;
+
+}
+
+.todo-area .title input {
     color: red;
     outline: 0px;
     border: 0px;
@@ -302,22 +351,36 @@ body::after{
     border-bottom-right-radius: 25px;
 }
 .controls{
-    float: right;
+    flex-shrink:1.5;
+    display: flex;
+    position: relative;
+    
 }
-.controls > *{
-    margin-left:10px;
+.controls .bi{
+
+   display: inline-block;
+   margin-right: 2%;
+
 }
 
 .stats,.controls,.controls >*{
     display: inline-block;
     
+    
 }
-.stats > *{margin-left:10px;}
+.stats{
+    flex-grow:2;
+}
+.stats > *{
+    margin-left:5%;
+    
+
+}
 
 .create-new-todo{
-    width:33%;
+    width:66%;
     border:1px solid black;
-    margin: 5px 33%;
+    margin: 5px 16.6666%;
 }
 .push-new{
     display: inline-block;
@@ -326,9 +389,11 @@ body::after{
     border-radius: 10px;
     margin-left:10px;
     cursor: pointer;
+    padding: 3px 8px 3px 8px;
 }
 .push-new:hover{
-    transform: scale(1.005);
+    transform: scale(1.015);
+    color:rgba(26, 172, 234, 0.448);
 
 }
 i.open-form{
@@ -366,7 +431,6 @@ i.open-form{
     padding:3px;
     user-select: none;
     display: inline-block;
-    margin-right: 10px;
     text-decoration: none;
 }
 .due-date:hover{
@@ -543,3 +607,101 @@ i.open-form{
       border:0px;
       border-bottom: 1px solid black;
   }
+
+
+  .make-new-todos{
+      position: relative;
+
+  }
+
+  .side-bar-titles{
+      position: relative;
+  }
+  .bar-title{
+      color:White;
+      margin: 5% 15%;
+      width:70%;
+      cursor:default;
+  }
+  .bar-title > *{
+      display: inline-block;
+      margin-left:5%;
+  }
+
+
+  .bar-title.sel{
+      
+      transform: scale(1.3);
+      text-decoration: underline 2px rgba(0, 157, 255, 0.903) ;
+      box-shadow: 0px 0px 2px white;
+
+  }
+
+  .bar-title.unsel:hover{
+      transform: scale(1.1);
+      color: rgba(0, 157, 255, 0.903);
+      cursor: pointer;
+
+  }
+
+  .bar-title:hover i:hover{
+    color:black;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.655);
+
+}
+
+  .make-new-todos input{
+      max-width:60%;
+      margin-bottom: 10%;
+
+  }
+  .slide-in1 .make-new-todos, .slide-in1 .side-bar-titles{
+      visibility: hidden;
+  }
+  
+  .make-new-todos i{
+      position: absolute;
+      right:1px;
+      top:30%;
+      color:white;
+  }
+
+  @media screen and (max-width:800px) {
+    :root{
+        --side-bar-width:max(150px,10%);
+    }
+      .todo-ele-wrapper{
+          width:95%;
+          margin: 5px 2.5%;
+      }
+
+      .todo-name{
+
+          max-width: 35%;
+      }
+
+      .create-new-todo{
+        width:80%;
+        border:1px solid black;
+        margin: 5px 10%;
+    }
+      
+  }
+  @media screen and (max-width:320px) {
+    .todo-ele-wrapper{
+        width:100%;
+        margin: 5px 0%;
+    }
+
+    .todo-area .todo-name{
+
+        max-width: 25%;
+    }
+    .create-new-todo{
+        width:95%;
+        margin:auto 2.5%;
+     
+    }
+    
+}
+

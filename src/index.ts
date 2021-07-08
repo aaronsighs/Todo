@@ -120,14 +120,15 @@ function addNewToDo(todos:TodosModel){
     let newTodo = new todo(todoName);
     todos.add(newTodo);
     createTodo(newTodo,todos);
+    localStorage.setItem("allTodos",JSON.stringify(allTodos))
 
 }
 
 function drawMakeNew(todos:TodosModel){
-    console.log(todos)
+
     let section = <HTMLElement>document.querySelector("#section-"+todos.getId() + " .make-new");
 
-    let createBox = makeHtmlElement("div",section,{classes:"create-new-todo container todo-name"});
+    let createBox = makeHtmlElement("div",section,{classes:"create-new-todo container "});
     //let fastCreate = makeToggableTextBox("new todo","fastCreate-"+todos.getId(),createBox,"todo-name");
     let fastCreate = makeHtmlElement("input",createBox,{placeholder:"new todo",value:"new todo title", classes:"title"})
     let push       = makeHtmlElement("i",createBox,{classes:"push-new ",text:"quick create"})
@@ -187,7 +188,7 @@ function setCreateEditFormDefaults(todo:todo){
 function redrawTodo(todos:TodosModel,todo:todo){
     let htmlTodoWrapper = createTodo(todo,todos,false);
     let oldTodoWrapper  = <HTMLElement>document.querySelector("#todo-"+todo.getId())
-    console.log("here")
+ 
     oldTodoWrapper.replaceWith(htmlTodoWrapper);
 
 }
@@ -218,10 +219,10 @@ function drawCommentInput(todo:todo){
     textBox.onkeypress = (e) =>{
         if (e.key === "Enter"){
             if (textBox.value){
-                console.log(textBox.value,"here")
-                console.log(document.querySelector("#message-input"))
+      
                 let note = todo.addNote(textBox.value);
-                console.log(note);
+                localStorage.setItem("allTodos",JSON.stringify(allTodos))
+            
                 drawComment(commentSection,note,todo);
                 textBox.value = "";
             }
@@ -230,10 +231,10 @@ function drawCommentInput(todo:todo){
     }
     textPush.onclick = ()=>{
         if (textBox.value){
-            console.log(textBox.value,"here")
-            console.log(document.querySelector("#message-input"))
+
             let note = todo.addNote(textBox.value);
-            console.log(note);
+            localStorage.setItem("allTodos",JSON.stringify(allTodos))
+         
             drawComment(commentSection,note,todo);
             textBox.value = "";
         }
@@ -245,16 +246,16 @@ function drawCommentInput(todo:todo){
 
 
 function getTimeFromTimeBasedId(id:string){
-    console.log(id)
+ 
     let date = new Date(+id)
-    console.log(date);
+  
     return date.toLocaleString('default', { month: 'short' ,day:'2-digit'})  + " " + `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
     
 
 }
 
 function drawComment(section:HTMLElement,note:note,todo:todo){
-    console.log(note.id)
+ 
 
     makeHtmlElement("div",section,{
         classes:"note",
@@ -301,7 +302,7 @@ function getFormData(){
 
 
 function createForm(todos:TodosModel,allowComments=false){
-    console.log(todos)
+
     
     let formBase = makeHtmlElement("div",document.body,{classes:"form-module"});
     formBase.addEventListener("click",e=>{
@@ -411,9 +412,9 @@ function makeToggableTextBox(text:string,id:string,parentEle:HTMLElement=null,cl
 
 
 function makeTitle(eleSel:string,todos:TodosModel,listeners:Array<Listener> = []  ) {
-    makeToggableTextBox(todos.getName(),todos.getId(),document.querySelector(eleSel),"title",(value:any)=>{
+    makeToggableTextBox(todos.getName(),todos.getId(),document.querySelector(eleSel),"todos title",(value:any)=>{
         todos.setName(value)
-        console.log("i am here trying to change sidebar")
+    
         changeNameSidebar(todos.getId(),value)
         
     })
@@ -505,19 +506,21 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     if (!addToDom){section=null}
     let todoEleWrapper = makeHtmlElement("div",section,{classes:"todo-ele-wrapper"})
     let todoEle = makeHtmlElement("div",todoEleWrapper,{classes:"todo-ele"})
+   
     todoEleWrapper.id = "todo-"+todo.getId();
 
     let banner  = makeHtmlElement("div",todoEle,{classes:"banner"})
+    let todoEleInnerWrapper = makeHtmlElement("div",todoEle,{classes:"todo-ele-inner"})
     if(todo.getOptions("priority")){
         banner.style.backgroundColor = <string>todo.getOptions("priority");
     }
 
-    let check = makeHtmlElement("input",todoEle,{classes:"check",type:"checkbox"})
-    let titlebox = makeToggableTextBox(todo.getTitle(),"title-"+todo.getId(),todoEle,"todo-name",(value:any)=>todo.setTitle(value))
+    let check = makeHtmlElement("input",todoEleInnerWrapper,{classes:"check",type:"checkbox"})
+    let titlebox = makeToggableTextBox(todo.getTitle(),"title-"+todo.getId(),todoEleInnerWrapper,"todo-name",(value:any)=>todo.setTitle(value))
     
 
 
-    let stats = makeHtmlElement("div",todoEle,{classes:"stats"});
+    let stats = makeHtmlElement("div",todoEleInnerWrapper,{classes:"stats"});
     if(todo.getOptions("dueDate")){
         let date = makeHtmlElement("div",stats,{text:<string>todo.getOptions("dueDate"),classes:"due-date"})
     }
@@ -607,7 +610,7 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
 
     
 
-    let controls = makeHtmlElement("div",todoEle,{classes:"controls"});
+    let controls = makeHtmlElement("div",todoEleInnerWrapper,{classes:"controls"});
     let editBtn = makeHtmlElement("i",controls,{classes:"edit bi bi-pen"});
     editBtn.onclick = (e) =>{
         createEditForm(todos,todo)
@@ -630,7 +633,7 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     }
     todo.setOptions("checkValue",!todo.getOptions("checkValue"))
 }
-console.log("hi im returing",todoEleWrapper);
+
 return todoEleWrapper
 }
 
@@ -685,49 +688,6 @@ var onTodosView = (function(currentTodos:TodosModel){
 
 
 
- class TodosModel{
-     private todos:Array<todo>;
-     name:string;
-     private id:string;
-     constructor(name:string){
-        this.todos = [];
-        this.name = name;
-        this.id = ""+new Date().getTime();
-     }
-     add(todo:todo){
-         this.todos.push(todo);
-     }
-     removeIndex(index:number){
-         this.todos = [...this.todos.splice(0,index),...this.todos.splice(index+1)];
-     }
-     removeById(id:string){
-         this.todos = this.todos.filter( item => item.getId() !== id )
-     }
-
-     removeByTodo(todo:todo){
-         this.removeById(todo.getId());
-     }
-
-     show(){
-         console.log("---"+this.name+"---");
-         this.todos.forEach( item => console.log(item.getTitle()))
-     }
-     getName(){
-         return this.name;
-     }
-     setName(name:string){
-         if(!name){return}
-         this.name = name;
-     }
-     getId(){
-         return this.id;
-     }
-     getTodos(){
-         return this.todos;
-     }
-
- }
-
 
  type note ={
      id:string
@@ -755,7 +715,6 @@ class todo{
         this.desciption = desciption;
         this.option = options;
         this.id = ""+new Date().getTime();
-
     }   
     private getProps<Options, k extends keyof Options>(obj:Options,name:k){
         return obj[name];
@@ -797,8 +756,68 @@ class todo{
     deleteNote(id:string){
         this.option.notes = this.option.notes.filter(note=>note.id !==id)
     }
+    fromStringify(inp:any){
+        this.title = inp.title;
+        this.id = inp.id
+        this.option = inp.option;
+        this.desciption =inp.description;
+        return this;
+    }
 
 }
+
+
+class TodosModel{
+    private todos:Array<todo>;
+    name:string;
+    private id:string;
+    constructor(name:string){
+       this.todos = [];
+       this.name = name;
+       this.id = ""+name.length+"-"+new Date().getTime()
+    }
+    add(todo:todo){
+        this.todos.push(todo);
+    }
+    removeIndex(index:number){
+        this.todos = [...this.todos.splice(0,index),...this.todos.splice(index+1)];
+    }
+    removeById(id:string){
+        this.todos = this.todos.filter( item => item.getId() !== id )
+    }
+
+    removeByTodo(todo:todo){
+        this.removeById(todo.getId());
+    }
+
+    show(){
+        this.todos.forEach( item => console.log(item.getTitle()))
+    }
+    getName(){
+        return this.name;
+    }
+    setName(name:string){
+        if(!name){return}
+        this.name = name;
+    }
+    getId(){
+        return this.id;
+    }
+    getTodos(){
+        return this.todos;
+    }
+    fromStringify(inp:any){
+        this.name = inp.name
+     
+        this.todos = inp.todos.map( (td:any)=> {if (td)new todo("","",{}).fromStringify(td)})
+        this.id = inp.id
+        
+
+        return this
+    }
+
+}
+
 
 
  let table = new TodosModel("thoughts");
@@ -811,6 +830,7 @@ class todo{
      }
      )
  )
+
  let table2 = new TodosModel("Foods");
  table2.add(
     new todo(
@@ -822,18 +842,25 @@ class todo{
     )
 )
  
- table.show();
- console.log("descrp: ",table.getTodos()[0].getDescription())
 
- let allTodos:Array<TodosModel> = [table,table2];
+
+
+
+
+let allTodos:Array<TodosModel> = [table,table2];
+// localStorage.setItem("allTodos","[]")
+
+
+
 
 
  function changeNameSidebar(id:string,value:string){
-     console.log(id)
+  
      
-    let  sidebarName = document.querySelector("#sidebarTodoName-"+id)
+    let  sidebarName = document.querySelector("#sidebarTodoName-"+id + " .bar-title-text")
     if (!sidebarName){return }
     sidebarName.textContent = value;
+
      
  }
 
@@ -848,29 +875,89 @@ class todo{
 
 
 
+ function removeTodos(id:string){
+  
+    allTodos =  allTodos.filter(todos=>todos.getId()!==id)
+    localStorage.setItem("allTodos",JSON.stringify(allTodos))
+
+ }
  
 
- onTodosView(table);
+
  let sidebarTitles = makeHtmlElement("div",null,{classes:"side-bar-titles"})
- allTodos.forEach( todos => {
-    let htmlTodos = makeHtmlElement("div",sidebarTitles,{text:todos.getName(),id:"sidebarTodoName-"+todos.getId()})
-    htmlTodos.onclick = (e) =>{onTodosView(todos)}
+ allTodos.forEach( (todos,index) => {
+
+    let htmlTodos = makeHtmlElement("div",sidebarTitles,{classes:`bar-title ${!index ? "sel" : "unsel"}`,id:"sidebarTodoName-"+todos.getId()});
+    let text = makeHtmlElement("div",htmlTodos,{classes:"bar-title-text",text:todos.getName()})
+    let del = makeHtmlElement("i",htmlTodos,{classes:"bi bi-trash2-fill"});
+    htmlTodos.addEventListener("click", (e) =>{
+        if ((<HTMLElement>e.target).nodeName === "I"){
+            return
+        }
+        onTodosView(todos)
+        removeSelClass();
+        htmlTodos.classList.replace("unsel","sel")
+        e.stopPropagation()
+        
+    },true);
+    del.onclick = (e)=>{
+        removeTodos(todos.getId());
+        let ele = sidebarTitles.removeChild(htmlTodos);
+
+        if (ele.classList.contains("sel")){
+            if (allTodos.length>0){
+               let grabbedEle = (<HTMLButtonElement>document.querySelectorAll(".bar-title")[0]);
+               grabbedEle.click();
+            }else{
+            clearContent()
+            }
+
+        }
+        
+        
+        
+        
+
+    }
  });
  let newTodosInput = makeHtmlElement("div",sidebar,{ classes:"make-new-todos",children:
 [["input",{}],
 ]});
 
 
-let newTodosBtn = makeHtmlElement("i",newTodosInput, {classes:"bi bi-plus-square"})
+function removeSelClass(){
+    let sidebarTitles = document.querySelector(".side-bar-titles")
+    sidebarTitles.childNodes.forEach(
+        (node:HTMLElement)=>node.classList.replace("sel","unsel")
+    )
+}
+
+
+let newTodosBtn = makeHtmlElement("i",newTodosInput, {classes:"bi bi-plus-square-fill"})
 newTodosBtn.onclick = (e)=>{
     let input = <HTMLInputElement>document.querySelector(".make-new-todos input");
-    console.log(input.value)
+ 
     if (!input.value){return }
     
     let todos = new TodosModel(input.value);
     allTodos.push(todos)
-    let htmlTodos = makeHtmlElement("div",sidebarTitles,{text:todos.getName(),id:"sidebarTodoName-"+todos.getId()})
-    htmlTodos.onclick = (e) =>{onTodosView(todos)}
+    localStorage.setItem("allTodos",JSON.stringify(allTodos))
+    let htmlTodos = makeHtmlElement("div",sidebarTitles,{classes:"bar-title unsel",text:todos.getName(),id:"sidebarTodoName-"+todos.getId()})
+    let del = makeHtmlElement("i",htmlTodos,{classes:"bi bi-trash2-fill"});
+    htmlTodos.addEventListener("click", (e) =>{
+        onTodosView(todos)
+        removeSelClass();
+        htmlTodos.classList.replace("unsel","sel")
+        e.stopPropagation()
+        
+    },false);
+    del.addEventListener("click",(e)=>{
+        removeTodos(todos.getId());
+        sidebarTitles.removeChild(htmlTodos);
+        clearContent();
+        e.stopPropagation()
+
+    },false)
 }
 sidebar.append(sidebarTitles);
 
@@ -879,4 +966,3 @@ sidebar.append(sidebarTitles);
 
 
  let d = new Date();
- console.log(d.getTime(),new Date(d.getTime()))
