@@ -1,772 +1,877 @@
-:root{
-    --side-bar-width:max(200px,15%);
-}
-
-
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
-
-
-
-
-
-
-
-#test-img-0001 {
-    animation: spin 3s infinite;
-    margin: 25% 50%;
-    @keyframes spin {
-        0% {
-            transform: rotateZ(0deg) scale(1);
-        }
-        50% {
-            transform: rotateZ(180deg) scale(2)
-        }
-        100% {
-            transform: rotateZ(360deg) scale(1)
-        }
-    }
-}
-
-body,html{
-    padding:0;
-    margin:0;
-    position: relative;
-    height:100%;
-    width:100%;
-    $w :10%;
-    overflow: hidden;
-    min-width:260px;
-
-}
-
-
-.form-module label{
-    font-weight: 600;
-    text-shadow: 1px 1px 2px rgba(162, 161, 161, 0.669) ;
-}
-
-
-#main-wrapper{
-    height:calc(100% - 50px);
-    position:relative;
-    display: flex;
-}
-
-body::after{
-    // grid-template-columns: 10% auto;
-    display: flex;
-
-}
-
-#header{
-    background-color: rgb(105, 179, 224);
-    width:100%;
-    height:50px;
-    font-size: 1.5rem;
-}
-
-
-
-#side-bar{
-    background-color: rgb(176, 215, 224);
-    height:100%;
-    width:var(--side-bar-width);
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: clip;
-    text-align: center;
-}
-
-.test{
-    animation: name duration timing-function delay iteration-count direction fill-mode;
-}
-
-.slide-in1{
-    animation: slide-in .65s forwards;
-}
-.slide-out1{
-    animation: slide-out .85s forwards;
-    background-color: rgb(113, 179, 236);
-}
-
-.slide-in2{
-    animation: slide-in2 .65s forwards;
-}
-.slide-out2{
-    animation: slide-out2 .85s forwards;
-}
-
-
-@keyframes slide-in2 {
-    0%{
-        width:100%;
-    }
-    50%{
-        width:90%
-    }
-    100%{
-        width:90%
-
-    }
-    
-}
-@keyframes slide-out2 {
-    0%{
-        width:90%
-    
-    }
-    50%{
-        width:90%
-    }
-    100%{
-        width:100%
-
-    }
-    
-}
-
-
-
-
-@keyframes slide-in {
-    0%{
-        width:var(--side-bar-width);
-    }
-    100%{
-        width:0%
-
-    }
-    
-}
-@keyframes slide-out {
-    0%{
-        width:0%
-    
-    }
-    100%{
-        width:var(--side-bar-width);
-
-    }
-    
-}
-
-
-#content{
-    display: inline-block;
-    height:100%;
-    max-width:100%;
-    flex-grow: 2;
-    overflow: hidden;
-    
-    
-
-}
-
-.title {
-    text-align: center;
-    width:25%;
-    margin: 0 37.5%;
-    padding:5px
-}
-.title input:read-only{
-     color:black;
-     text-shadow: 2px 1px 1px rgba(8, 8, 8, 0.324);
-     font-size: 1.2rem;
-}
-.title i{
-    font-size: .7rem;
-}
-
-.title input::placeholder{
-    color:blue;
-    text-decoration: underline;
-    
-}
-
-
-.title input:read-only::placeholder{
-    color:green;
-    text-decoration: none;
-}
-
-.todo-area{
-
-    max-height: 500px
-
-}
-
-.todo-list{
-    position: relative;
-    overflow:hidden;
-
-}
-
-.todo-ele-inner{
-    display: flex;
-}
-#content{
-    background-color: rgba(210, 210, 210, 0.283);
-}
-
-.todo-ele{
-    border:1px solid black;
-    position: relative;
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.524);
-    width:100%;
-    background-color: rgba(255, 255, 255, 0.434);
-    
-    min-width: 120px;
-    border-radius: 5px;
-
-}
-
-.todo-ele-wrapper{
-    position: relative;
-    width:80%;
-    margin:10px 10%;
-    
-}
-.todo-ele:hover{
-    transform: scale(1.005);
-    box-shadow: 1px 1px 1px black;
-}
-
-.todo-ele .descr input{
-    text-align: left;
-    width:90%;
-    font-size: .7rem;
-}
-
-.create-new-todo input{
-    outline: 0px;
-    border: 0px;
-    text-align: left;
-    font-size: .7rem;
-    font-weight: 600;
-    height: 20px;
-    margin: 0;
-    padding: 0;
-    padding-top: 2px;
-    display: inline-block;
-    max-width: 75%;
-    width:30%;
-
-}
-input{
-    background-color: rgba(255, 255, 255, 0);
-}
-
-.todo-area .todo-name input{
-    outline: 0px;
-    border: 0px;
-    text-align: left;
-    font-size: .7rem;
-    font-weight: 600;
-    height: 20px;
-    margin: 0;
-    padding: 0;
-    padding-top: 2px;
-    display: inline-block;
-    max-width: 75%;
-    width:80%;
-    
-
-}
-.tg-txt{
-    position: relative;
-}
-.tg-txt i{
-    position: absolute;
-    right:0;
-    top:0;
-}
-.slide-down{
-    transition:height .5s;
-  height:50px;
-  overflow:hidden;
-}
-.check{
-    float:left;
-    color:blue;
-}
-
-.bi,.check{
-    cursor: pointer;
-}
-
-
-.tg-txt input:read-only{
-    cursor:default;
-}
-
-
-
-.todo-name i{
-    font-size: .6rem;
-}
-.todo-area .todo-name{
-    display: inline-block;
-    overflow: hidden;
-    flex-grow:2;
-}
-
-.title h3 {
-    height: 20px;
-    margin: 0;
-    padding: 0;
-}
-.tg-txt:after{
-    display: inline-block;
-    color:red;
-}
-
-.title.todos{
-    width:90%;
-    margin:auto 2.5%;
-}
-
-.title.todos input{
-    outline: 0px;
-    border: 0px;
-    text-align: center;
-    font-size: .85rem;
-    font-weight: 700;
-    margin: 0;
-    padding: 0;
-    width: 80%;
-    padding-top: 2px;
-
-}
-
-.todo-area .title input {
-    color: red;
-    outline: 0px;
-    border: 0px;
-    text-align: center;
-    font-size: .85rem;
-    font-weight: 700;
-    max-height: 30px;
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    padding-top: 2px;
-}
-.banner{
-    height:8px;
-    width:100%;
-    background-color: rgb(198, 198, 198);
-    margin: 0;
-    padding:0;
-    border-bottom-left-radius: 100px;
-    border-bottom-right-radius: 100px;
-}
-.controls{
-    flex-shrink:1.5;
-    display: flex;
-    position: relative;
-    
-}
-.controls .bi{
-
-   display: inline-block;
-   margin-right: 2%;
-
-}
-
-.stats,.controls,.controls >*{
-    display: inline-block;
-    
-    
-}
-.stats{
-    flex-grow:2;
-}
-.stats > *{
-    margin-left:5%;
-    
-
-}
-
-.create-new-todo{
-    width:66%;
-    border:1px solid black;
-    margin: 5px 16.6666%;
-}
-.push-new{
-    display: inline-block;
-    background-color: rgb(234, 234, 234);
-    font-size: .8rem;
-    border-radius: 10px;
-    margin-left:10px;
-    cursor: pointer;
-    padding: 3px 8px 3px 8px;
-}
-.push-new:hover{
-    transform: scale(1.015);
-    color:rgba(26, 172, 234, 0.448);
-
-}
-i.open-form{
-    float:right;
-    font-size: 1.25rem;
-    margin-right:10px;
-}
-.form-module{
-    position: absolute;
-    z-index:60;
-    width: 100%;
-    height:100%;
-    background-color: rgba(229, 229, 229, 0.71);
-    top:0%;
-    left:0%;
-}
-.form-module .content{
-    width:80%;
-    height:80%;
-    margin: 10% 10%;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 5px black;
-    z-index:65;
-    position: absolute;
-    border-radius: 5px;
-    overflow:hidden;
-}
-
-
-
-.due-date{
-    background-color:rgba(4, 255, 29, 0.558);
-    border-radius:15px;
-    box-shadow: 1px 1px 2px rgba(138, 138, 138, 0.717);
-    font-size: .55rem;
-    padding:3px;
-    user-select: none;
-    display: inline-block;
-    text-decoration: none;
-}
-.due-date:hover{
-    background-color:rgb(4, 255, 29);
-    transform: scale(1.05);
-    
-}
-
-.tooltip {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width:50px;
-    background-color: rgba(0, 0, 0, 0.705);
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 2px 0;
-    top:-20px;
-    left:20px;
-   
-  
-    /* Position the tooltip */
-    position: absolute;
-    
-  }
-  
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    font-size: .6rem;
-    z-index: 200000;
-    opacity:.9;
-    transform: scale(1.1);
-    position: absolute;
-
-  }
-  .stats{
-      display: inline-flex;
-
-      align-items: center;
-      
-  }
-  .tooltip:hover{
-      text-shadow: 0px 0px 2px rgb(111, 111, 111);
-    
-  }
-
-  .descr-btn{
-  
-  }
-
-  form{
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-template-rows: auto auto 2fr;
-
-  }
-  form div{
-    
-      margin:2%;
-      text-align: center;
-  }
-
-  .btn-div{
-      width:200%;
-      align-items: center;
-    
-  }
-  .btn-div button{
-    border: 0px;
-    box-shadow: 0px 0px 2px rgb(132, 130, 130);
-    padding:1%;
-
-  }
-  .btn-div button:hover{
-
-    box-shadow: 0px 0px 4px rgb(132, 130, 130);
-    transform: scale(1.1);
-    cursor: pointer;
-
-
-  }
-
-  .form-module div input, .form-module div textarea{
-      border:0px;
-      border-bottom: 2px solid black;
-      background-color: rgba(231, 231, 231, 0.427);
-  }
-
-  .form-module div input::selection, .form-module div textarea::selection,.form-module div input:focus, .form-module div textarea:focus{
-    border:0px;
-    border-bottom: 2px solid rgb(94, 149, 207);
-    background-color: rgba(231, 231, 231, 0.538);
-    outline:0px;
-}
-
-  #description{
-      width:50%;
-      height:100%;
-  }
-
- 
-
-
-.info-box{
-  overflow:hidden;
-  width:100%;
-  height:0;
-  background-color: rgba(236, 236, 236, 0.648);
-  border: 1px solid black;
-  border-top:0px;
-  border-left: 0px;
-  border-right: 0px;
-  z-index:70;
-}
-
-.info-box.new{
-    animation: slide-dwn 1s forwards;
-}
-.info-box.old{
-    animation: slide-up 1s forwards;
-}
-
-.info-box.new.fast{
-    animation: slide-dwn .25s forwards;
-}
-.info-box.old.fast{
-    animation: slide-up .25s forwards;
-}
-
-.info-box h3{
-    font-size:.7rem;
-    margin:0;
-    padding:0;
-}
-.descr-txt{
-    font-size: .85rem;
-}
-
-
-@keyframes slide-up {
-    0%{
-        height:30px;
-    }
-    100%{
-        height:0px;
-    }
-    
-}
-
-@keyframes slide-dwn {
-    0%{
-        height:0px;
-    }
-    100%{
-        height:30px;
-    }
-    
-}
-  .note{
-      //max-width:50%;
-      background-color: rgb(241, 241, 241);
-      border-radius: 3px;
-      box-shadow: 1px 1px 3px;
-      text-align: center;
-      position: relative;
-      margin: 5px;
-      //@extend:25%;
-      min-height:30px;
-      display: inline-block;
-      padding:8px;
-      height:fit-content;
-      word-wrap: break-word;
-  }
-  .del-comment{
-      float:right;
-  }
-  .del-comment:hover{
-      color:rgba(22, 22, 22, 0.51);
-      transform:scale(1.075);
-  }
-  .comment-input{
-      position: absolute;
-      bottom:0;
-      width:100%;
-      
-  }
-  .comment-input input{
-      width:60%
-  }
-
-  .comment-section{
-      overflow-y: scroll;
-      height:60%;
-      display: grid;
-      grid-template-columns: 25% 25% 25% 25%;
-      border:1px solid black;
-  }
-
-  .note:hover .comment-time{
-      visibility:visible;
-      text-shadow: 1px 1px 1px gray;
-  }
-  .note:hover {
-    color:gray
-  }
-  .note:hover i{
-      color:rgb(77, 77, 77);
-  }
-  .note:hover i:hover{
-      color:rgb(0, 0, 0);
-  }
-  .comment-time{
-      visibility: hidden;
-      position: absolute;
-      right:0;
-      font-size: .55rem;
-      bottom:-10px;
-      color:rgba(28, 100, 255, 0.876);
-  }
-
-  .make-new-todos input{
-      background-color: rgba(255, 255, 255, 0.021);
-      outline: 0px;
-      border:0px;
-      border-bottom: 1px solid black;
-  }
-
-
-  .make-new-todos{
-      position: relative;
-
-  }
-
-  .side-bar-titles{
-      position: relative;
-  }
-  .bar-title{
-      color:White;
-      margin: 5% 15%;
-      width:70%;
-      cursor:default;
-  }
-  .bar-title > *{
-      display: inline-block;
-      margin-left:5%;
-  }
-
-
-  .bar-title.sel{
-      
-      transform: scale(1.3);
-      text-decoration: underline 2px rgba(0, 157, 255, 0.903) ;
-      box-shadow: 0px 0px 2px white;
-
-  }
-
-  .bar-title.unsel:hover{
-      transform: scale(1.1);
-      color: rgba(0, 157, 255, 0.903);
-      cursor: pointer;
-
-  }
-
-  .bar-title:hover i:hover{
-    color:black;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.655);
-
-}
-
-  .make-new-todos input{
-      max-width:60%;
-      margin-bottom: 10%;
-
-  }
-  .slide-in1 .make-new-todos, .slide-in1 .side-bar-titles{
-      visibility: hidden;
-  }
-  
-  .make-new-todos i{
-      position: absolute;
-      right:1px;
-      top:30%;
-      color:white;
-  }
-
-  @media screen and (max-width:800px) {
-    :root{
-        --side-bar-width:max(150px,10%);
-    }
-      .todo-ele-wrapper{
-          width:95%;
-          margin: 5px 2.5%;
-      }
-
-      .todo-name{
-
-          max-width: 35%;
-      }
-
-      .create-new-todo{
-        width:80%;
-        border:1px solid black;
-        margin: 5px 10%;
-    }
-      
-  }
-  @media screen and (max-width:320px) {
-    .todo-ele-wrapper{
-        width:100%;
-        margin: 5px 0%;
-    }
-
-    .todo-area .todo-name{
-
-        max-width: 25%;
-    }
-    .create-new-todo{
-        width:95%;
-        margin:auto 2.5%;
-     
-    }
-    
-}
-
+                              :root {
+                                 --side-bar-width: max(200px, 15%);
+                             }
+                             
+                             @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
+                             #test-img-0001 {
+                                 animation: spin 3s infinite;
+                                 margin: 25% 50%;
+                                 @keyframes spin {
+                                     0% {
+                                         transform: rotateZ(0deg) scale(1);
+                                     }
+                                     50% {
+                                         transform: rotateZ(180deg) scale(2)
+                                     }
+                                     100% {
+                                         transform: rotateZ(360deg) scale(1)
+                                     }
+                                 }
+                             }
+                             
+                             body,
+                             html {
+                                 padding: 0;
+                                 margin: 0;
+                                 position: relative;
+                                 height: 100%;
+                                 width: 100%;
+                                 $w: 10%;
+                                 overflow: hidden;
+                                 min-width: 260px;
+                             }
+                             
+                             .form-module label {
+                                 font-weight: 600;
+                                 color: rgb(105, 179, 224);
+                             }
+                             
+                             #main-wrapper {
+                                 height: calc(100% - 50px);
+                                 position: relative;
+                                 display: flex;
+                             }
+                             
+                             body::after {
+                                 // grid-template-columns: 10% auto;
+                                 display: flex;
+                             }
+                             
+                             #header {
+                                 background-color: rgb(105, 179, 224);
+                                 width: 100%;
+                                 height: 50px;
+                                 font-size: 2rem;
+                             }
+                             
+                             #side-bar {
+                                 background-color: rgba(212, 226, 230, 0.816);
+                                 height: 100%;
+                                 width: var(--side-bar-width);
+                                 display: inline-block;
+                                 overflow: hidden;
+                                 text-overflow: clip;
+                                 text-align: center;
+                             }
+                             
+                             .test {
+                                 animation: name duration timing-function delay iteration-count direction fill-mode;
+                             }
+                             
+                             .slide-in1 {
+                                 animation: slide-in .65s forwards;
+                             }
+                             
+                             .slide-out1 {
+                                 animation: slide-out .85s forwards;
+                                 background-color: rgb(113, 179, 236);
+                             }
+                             
+                             .slide-in2 {
+                                 animation: slide-in2 .65s forwards;
+                             }
+                             
+                             .slide-out2 {
+                                 animation: slide-out2 .85s forwards;
+                             }
+                             
+                             @keyframes slide-in2 {
+                                 0% {
+                                     width: 100%;
+                                 }
+                                 50% {
+                                     width: 90%
+                                 }
+                                 100% {
+                                     width: 90%
+                                 }
+                             }
+                             
+                             @keyframes slide-out2 {
+                                 0% {
+                                     width: 90%
+                                 }
+                                 50% {
+                                     width: 90%
+                                 }
+                                 100% {
+                                     width: 100%
+                                 }
+                             }
+                             
+                             @keyframes slide-in {
+                                 0% {
+                                     width: var(--side-bar-width);
+                                 }
+                                 100% {
+                                     width: 0%
+                                 }
+                             }
+                             
+                             @keyframes slide-out {
+                                 0% {
+                                     width: 0%
+                                 }
+                                 100% {
+                                     width: var(--side-bar-width);
+                                 }
+                             }
+                             
+                             #content {
+                                 display: inline-block;
+                                 height: 100%;
+                                 max-width: 100%;
+                                 flex-grow: 2;
+                                 overflow: hidden;
+                             }
+                             
+                             .title {
+                                 text-align: center;
+                                 width: 25%;
+                                 margin: 0 37.5%;
+                                 padding: 5px
+                             }
+                             
+                             .title input:read-only {
+                                 color: rgba(0, 157, 255, 0.903);
+                                 font-size: 1.5rem;
+                             }
+                             
+                             .title i {
+                                 font-size: .7rem;
+                             }
+                             
+                             .title input::placeholder {
+                                 color: blue;
+                                 text-decoration: underline;
+                             }
+                             
+                             .title input:read-only::placeholder {
+                                 color: green;
+                                 text-decoration: none;
+                             }
+                             
+                             .todo-area {
+                                 max-height: 80vh;
+                                 overflow-y: scroll;
+                             }
+                             
+                             .todo-list {
+                                 position: relative;
+                                 overflow: hidden;
+                             }
+                             
+                             .todo-ele-inner {
+                                 display: flex;
+                             }
+                             
+                             #content {
+                                 background-color: rgba(210, 210, 210, 0.283);
+                             }
+                             
+                             .todo-ele {
+                                 position: relative;
+                                 box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.524);
+                                 width: 100%;
+                                 background-color: rgba(201, 201, 201, 0.241);
+                                 min-width: 120px;
+                                 overflow: hidden;
+                             }
+                             
+                             .not-checked {
+                                 // animation: grow 1s forwards;
+                             }
+                             
+                             @keyframes grow {
+                                 0% {
+                                     height: 2.5px;
+                                 }
+                                 100% {
+                                     height: 45px;
+                                 }
+                             }
+                             
+                             .checked-off .todo-ele {
+                                 //background-color: rgb(2, 109, 175) // animation: shrink 1s forwards;
+                                 // margin: 0;
+                             }
+                             
+                             .checked-off .todo-ele {
+                                 height: 11px;
+                                 background-color: rgb(105, 179, 224);
+                                 border-radius: 0px;
+                                 border: 0px;
+                                 box-shadow: 0px 0px 1px black;
+                             }
+                             
+                             .todo-ele-wrapper.checked-off {
+                                 margin-top: 0%;
+                                 margin-bottom: 2px;
+                             }
+                             
+                             .checked-off .todo-ele-inner {
+                                 visibility: hidden;
+                             }
+                             
+                             @keyframes shrink {
+                                 0% {
+                                     height: 45px;
+                                 }
+                                 100% {
+                                     height: 2.5px;
+                                 }
+                             }
+                             
+                             .checked-off .banner {
+                                 background-color: rgba(15, 104, 187, 0.576);
+                                 height: 11px;
+                                 text-align: center;
+                                 font-stretch: wider;
+                                 font-weight: 600;
+                                 font-size: .7rem;
+                                 color: white;
+                                 border-radius: 0px;
+                             }
+                             
+                             .checked-off .banner:hover {
+                                 cursor: pointer;
+                             }
+                             
+                             .checked-off input {
+                                 text-decoration: line-through;
+                             }
+                             
+                             .checked-off .todo-ele-inner {}
+                             
+                             .todo-ele-wrapper {
+                                 position: relative;
+                                 width: 80%;
+                                 margin: 10px 10%;
+                             }
+                             
+                             .todo-ele:hover {
+                                 //transform: scale(1.015);
+                                 //box-shadow: 1px 1px 1px black;
+                             }
+                             
+                             .todo-ele .descr input {
+                                 text-align: left;
+                                 width: 90%;
+                                 font-size: .7rem;
+                             }
+                             
+                             .create-new-todo input {
+                                 outline: 0px;
+                                 border: 0px;
+                                 text-align: left;
+                                 font-size: .7rem;
+                                 font-weight: 600;
+                                 height: 20px;
+                                 margin: 0;
+                                 padding: 0;
+                                 padding-top: 2px;
+                                 display: inline-block;
+                                 max-width: 75%;
+                                 width: 30%;
+                             }
+                             
+                             input {
+                                 background-color: rgba(255, 255, 255, 0);
+                             }
+                             
+                             .todo-area .todo-name input {
+                                 outline: 0px;
+                                 border: 0px;
+                                 text-align: left;
+                                 font-size: .7rem;
+                                 font-weight: 600;
+                                 height: 20px;
+                                 margin: 0;
+                                 padding: 0;
+                                 padding-top: 2px;
+                                 display: inline-block;
+                                 max-width: 75%;
+                                 width: 80%;
+                             }
+                             
+                             .tg-txt {
+                                 position: relative;
+                             }
+                             
+                             .tg-txt i {
+                                 position: absolute;
+                                 right: 0;
+                                 top: 0;
+                             }
+                             
+                             .slide-down {
+                                 transition: height .5s;
+                                 height: 50px;
+                                 overflow: hidden;
+                             }
+                             
+                             .check {
+                                 float: left;
+                                 color: blue;
+                             }
+                             
+                             .bi,
+                             .check {
+                                 cursor: pointer;
+                             }
+                             
+                             .tg-txt input:read-only {
+                                 cursor: default;
+                             }
+                             
+                             .todo-name i {
+                                 font-size: .6rem;
+                             }
+                             
+                             .todo-name i:hover {
+                                 color: rgb(105, 179, 224)
+                             }
+                             
+                             .todo-area .todo-name {
+                                 display: inline-block;
+                                 overflow: hidden;
+                                 flex-grow: 2;
+                             }
+                             
+                             .title h3 {
+                                 height: 20px;
+                                 margin: 0;
+                                 padding: 0;
+                             }
+                             
+                             .tg-txt:after {
+                                 display: inline-block;
+                                 color: red;
+                             }
+                             
+                             .title.todos {
+                                 width: 90%;
+                                 margin: auto 2.5%;
+                             }
+                             
+                             .title.todos input {
+                                 outline: 0px;
+                                 border: 0px;
+                                 text-align: center;
+                                 font-size: .85rem;
+                                 font-weight: 700;
+                                 margin: 0;
+                                 padding: 0;
+                                 width: 80%;
+                                 padding-top: 2px;
+                             }
+                             
+                             .todo-area .title input {
+                                 color: red;
+                                 outline: 0px;
+                                 border: 0px;
+                                 text-align: center;
+                                 font-size: .85rem;
+                                 font-weight: 700;
+                                 max-height: 30px;
+                                 margin: 0;
+                                 padding: 0;
+                                 width: 200px;
+                                 padding-top: 2px;
+                             }
+                             
+                             .banner {
+                                 height: 4px;
+                                 width: 100%;
+                                 background-color: rgb(198, 198, 198);
+                                 margin: 0;
+                                 padding: 0;
+                             }
+                             
+                             .controls {
+                                 flex-shrink: 1.5;
+                                 display: flex;
+                                 position: relative;
+                             }
+                             
+                             .controls .bi {
+                                 display: inline-block;
+                                 margin-right: 2%;
+                             }
+                             
+                             .stats,
+                             .controls,
+                             .controls>* {
+                                 display: inline-block;
+                             }
+                             
+                             .stats {
+                                 flex-grow: 2;
+                             }
+                             
+                             .stats>* {
+                                 margin-left: 5%;
+                             }
+                             
+                             .create-new-todo {
+                                 width: 66%;
+                                 margin: 5px 16.6666%;
+                                 background-color: rgba(221, 221, 221, 0.864);
+                                 box-shadow: 0px 0px 2px rgb(77, 77, 77);
+                             }
+                             
+                             .push-new {
+                                 display: inline-block;
+                                 background-color: rgb(234, 234, 234);
+                                 font-size: .8rem;
+                                 margin-left: 10px;
+                                 cursor: pointer;
+                                 padding: 2px 8px 2px 8px;
+                                 box-shadow: 0px 0px 2px rgba(106, 106, 106, 0.774);
+                             }
+                             
+                             .push-new:hover {
+                                 color: rgb(0, 102, 255);
+                                 box-shadow: 0px 0px 2px rgb(85, 85, 85);
+                             }
+                             
+                             i.open-form {
+                                 float: right;
+                                 font-size: 1.25rem;
+                                 margin-right: 10px;
+                                 margin-top: 1px;
+                                 margin-bottom: 2px;
+                             }
+                             
+                             i.open-form:hover {
+                                 color: rgb(0, 102, 255);
+                             }
+                             
+                             .form-module {
+                                 position: absolute;
+                                 z-index: 60;
+                                 width: 100%;
+                                 height: 100%;
+                                 background-color: rgba(229, 229, 229, 0.71);
+                                 top: 0%;
+                                 left: 0%;
+                             }
+                             
+                             .form-module .content {
+                                 width: 60%;
+                                 height: 80%;
+                                 margin: 10% 20%;
+                                 background-color: rgb(255, 255, 255);
+                                 box-shadow: 0px 0px 5px rgb(118, 118, 118);
+                                 z-index: 65;
+                                 position: absolute;
+                                 border-radius: 2px;
+                                 overflow: hidden;
+                             }
+                             
+                             .due-date {
+                                 background-color: rgba(4, 255, 29, 0.558);
+                                 border-radius: 15px;
+                                 box-shadow: 1px 1px 2px rgba(138, 138, 138, 0.717);
+                                 font-size: .55rem;
+                                 padding: 3px;
+                                 user-select: none;
+                                 display: inline-block;
+                                 text-decoration: none;
+                             }
+                             
+                             .due-date:hover {
+                                 background-color: rgb(4, 255, 29);
+                                 transform: scale(1.05);
+                             }
+                             
+                             .tooltip {
+                                 position: relative;
+                                 display: inline-block;
+                             }
+                             
+                             .tooltip .tooltiptext {
+                                 visibility: hidden;
+                                 width: 50px;
+                                 background-color: rgba(55, 55, 55, 0.805);
+                                 box-shadow: 0px 0px 7px rgb(128, 128, 128);
+                                 color: #fff;
+                                 text-align: center;
+                                 padding: 2px 0;
+                                 top: 0px;
+                                 left: 20px;
+                                 /* Position the tooltip */
+                                 position: absolute;
+                             }
+                             
+                             .tooltip:hover .tooltiptext {
+                                 visibility: visible;
+                                 font-size: .6rem;
+                                 z-index: 200000;
+                                 opacity: .999;
+                                 transform: scale(1.1);
+                                 position: absolute;
+                             }
+                             
+                             .tooltip:hover .tooltiptext:hover {
+                                 visibility: hidden;
+                             }
+                             
+                             .stats {
+                                 display: inline-flex;
+                                 align-items: center;
+                             }
+                             
+                             .tooltip:hover {
+                                 text-shadow: 0px 0px 2px rgb(111, 111, 111);
+                             }
+                             
+                             .descr-btn {}
+                             
+                             form {
+                                 display: grid;
+                                 grid-template-columns: auto auto;
+                                 grid-template-rows: auto auto 2fr;
+                             }
+                             
+                             .form-module h2 {
+                                 color: rgb(105, 179, 224);
+                                 text-align: center;
+                             }
+                             
+                             form div {
+                                 margin: 2%;
+                                 text-align: center;
+                             }
+                             
+                             .btn-div {
+                                 width: 200%;
+                                 align-items: center;
+                             }
+                             
+                             .btn-div button {
+                                 border: 0px;
+                                 box-shadow: 0px 0px 2px rgb(132, 130, 130);
+                                 padding: 1%;
+                             }
+                             
+                             .btn-div button:hover {
+                                 box-shadow: 0px 0px 4px rgb(132, 130, 130);
+                                 transform: scale(1.1);
+                                 cursor: pointer;
+                             }
+                             
+                             .form-module div input,
+                             .form-module div textarea {
+                                 border: 0px;
+                                 border-bottom: 2px solid black;
+                                 background-color: rgba(231, 231, 231, 0.427);
+                                 text-align: center;
+                             }
+                             
+                             .form-module div textarea {
+                                 min-width: 100%;
+                             }
+                             
+                             .form-module div input::selection,
+                             .form-module div textarea::selection,
+                             .form-module div input:focus,
+                             .form-module div textarea:focus {
+                                 border: 0px;
+                                 border-bottom: 2px solid rgb(94, 149, 207);
+                                 background-color: rgba(231, 231, 231, 0.538);
+                                 outline: 0px;
+                             }
+                             
+                             #description {
+                                 width: 50%;
+                                 height: 100%;
+                             }
+                             
+                             .info-box {
+                                 overflow: hidden;
+                                 width: 100%;
+                                 height: 0;
+                                 background-color: rgba(236, 236, 236, 0.648);
+                                 border: 1px solid black;
+                                 border-top: 0px;
+                                 border-left: 0px;
+                                 border-right: 0px;
+                                 z-index: 70;
+                             }
+                             
+                             .info-box.new {
+                                 animation: slide-dwn 1s forwards;
+                             }
+                             
+                             .info-box.old {
+                                 animation: slide-up 1s forwards;
+                             }
+                             
+                             .info-box.new.fast {
+                                 animation: slide-dwn .25s forwards;
+                             }
+                             
+                             .info-box.old.fast {
+                                 animation: slide-up .25s forwards;
+                             }
+                             
+                             .info-box h3 {
+                                 font-size: .7rem;
+                                 margin: 0;
+                                 padding: 0;
+                             }
+                             
+                             .descr-txt {
+                                 font-size: .85rem;
+                             }
+                             
+                             @keyframes slide-up {
+                                 0% {
+                                     height: 36px;
+                                 }
+                                 100% {
+                                     height: 0px;
+                                 }
+                             }
+                             
+                             @keyframes slide-dwn {
+                                 0% {
+                                     height: 0px;
+                                 }
+                                 100% {
+                                     height: 36px;
+                                 }
+                             }
+                             
+                             .note {
+                                 //max-width:50%;
+                                 background-color: rgb(241, 241, 241);
+                                 border-radius: 1px;
+                                 box-shadow: 1px 1px 3px rgb(92, 91, 91);
+                                 text-align: center;
+                                 position: relative;
+                                 margin: 2%;
+                                 //@extend:25%;
+                                 min-height: 30px;
+                                 display: inline-block;
+                                 padding: 8px;
+                                 height: fit-content;
+                                 width: 21.25%;
+                                 word-wrap: break-word;
+                             }
+                             
+                             .del-comment {
+                                 float: right;
+                             }
+                             
+                             .form-module hr {
+                                 margin: 0;
+                             }
+                             
+                             .del-comment:hover {
+                                 color: rgba(22, 22, 22, 0.51);
+                                 transform: scale(1.075);
+                             }
+                             
+                             .comment-input {
+                                 position: absolute;
+                                 width: 100%;
+                                 bottom: 5%;
+                             }
+                             
+                             .comment-input input {
+                                 width: 60%;
+                                 text-align: left;
+                             }
+                             
+                             .comment-section {
+                                 overflow-y: scroll;
+                                 height: 43%;
+                                 background-color: rgba(245, 244, 244, 0.926);
+                                 position: relative;
+                             }
+                             
+                             .note:hover .comment-time {
+                                 visibility: visible;
+                                 text-shadow: 1px 1px 1px gray;
+                             }
+                             
+                             .note:hover {
+                                 color: gray
+                             }
+                             
+                             .note:hover i {
+                                 color: rgb(77, 77, 77);
+                             }
+                             
+                             .note:hover i:hover {
+                                 color: rgb(0, 0, 0);
+                             }
+                             
+                             .comment-time {
+                                 visibility: hidden;
+                                 position: absolute;
+                                 right: 0;
+                                 font-size: .55rem;
+                                 bottom: -10px;
+                                 color: rgba(28, 100, 255, 0.876);
+                             }
+                             
+                             .make-new-todos input {
+                                 background-color: rgba(255, 255, 255, 0.021);
+                                 outline: 0px;
+                                 border: 0px;
+                                 border-bottom: 1px solid black;
+                             }
+                             
+                             .make-new-todos {
+                                 position: relative;
+                             }
+                             
+                             .side-bar-titles {
+                                 position: relative;
+                             }
+                             
+                             .bar-title {
+                                 color: rgb(73, 73, 73);
+                                 margin: 5% 15%;
+                                 width: 70%;
+                                 cursor: default;
+                             }
+                             
+                             .bar-title>* {
+                                 display: inline-block;
+                                 margin-left: 5%;
+                             }
+                             
+                             .bar-title.sel {
+                                 transform: scale(1.3);
+                                 text-decoration: underline 2px rgba(0, 157, 255, 0.903);
+                                 box-shadow: 0px 0px 4px rgba(182, 182, 182, 0.522);
+                                 color: rgba(0, 157, 255, 0.903);
+                             }
+                             
+                             .bar-title.unsel:hover {
+                                 transform: scale(1.1);
+                                 color: rgba(0, 157, 255, 0.903);
+                                 cursor: pointer;
+                             }
+                             
+                             .bar-title:hover i:hover {
+                                 color: black;
+                                 text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.655);
+                             }
+                             
+                             .make-new-todos input {
+                                 max-width: 60%;
+                                 margin-bottom: 10%;
+                             }
+                             
+                             .slide-in1 .make-new-todos,
+                             .slide-in1 .side-bar-titles {
+                                 visibility: hidden;
+                             }
+                             
+                             .make-new-todos i {
+                                 position: absolute;
+                                 right: 14px;
+                                 top: 20%;
+                                 color: rgb(0, 102, 255);
+                             }
+                             
+                             .make-new-todos i:hover {
+                                 color: rgba(0, 157, 255, 0.903);
+                                 transform: scale(1.1);
+                             }
+                             
+                             @media screen and (max-width:800px) {
+                                  :root {
+                                     --side-bar-width: max(150px, 10%);
+                                 }
+                                 .todo-ele-wrapper {
+                                     width: 95%;
+                                     margin: 5px 2.5%;
+                                 }
+                                 .todo-name {
+                                     max-width: 35%;
+                                 }
+                                 .create-new-todo {
+                                     width: 80%;
+                                     border: 1px solid black;
+                                     margin: 5px 10%;
+                                 }
+                                 .form-module .content {
+                                     width: 80%;
+                                     margin-left: 10%;
+                                     height: 50%;
+                                     min-height: 50%;
+                                 }
+                             }
+                             
+                             @media screen and (max-height:900px) {
+                                 .comment-section {
+                                     height: 38%;
+                                 }
+                                 .form-module .content {
+                                     width: 80%;
+                                     margin-left: 10%;
+                                     height: 80%;
+                                 }
+                             }
+                             
+                             .btn-div {
+                                 width: 100%;
+                             }
+                             
+                             @media screen and (max-height:800px) {
+                                 .comment-section {
+                                     height: 32%;
+                                 }
+                             }
+                             
+                             @media screen and (max-height:700px) {
+                                 .comment-section {
+                                     height: 26%;
+                                 }
+                                 .form-module form div {
+                                     margin: 10%;
+                                 }
+                                 .form-module .content {
+                                     width: 95%;
+                                     margin-left: 2.5%;
+                                     height: 90%;
+                                 }
+                             }
+                             
+                             @media screen and (max-width:320px) {
+                                 .todo-ele-wrapper {
+                                     width: 100%;
+                                     margin: 5px 0%;
+                                 }
+                                 .todo-area .todo-name {
+                                     max-width: 25%;
+                                 }
+                                 .create-new-todo {
+                                     width: 95%;
+                                     margin: auto 2.5%;
+                                 }
+                                 .form-module .content {
+                                     width: 95%;
+                                     margin-left: 2.5%;
+                                     height: 90%;
+                                 }
+                                 .comment-section {
+                                     height: 18%;
+                                 }
+                             }

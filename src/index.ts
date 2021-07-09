@@ -64,7 +64,13 @@ type htmlOptions = {
 function makeHtmlElement(eleType:string,eleSource:HTMLElement=null,option: Partial<htmlOptions>={}):HTMLElement{
 let newEle:any= document.createElement(eleType);
 if (option.id){newEle.id = option.id}
-if (option.classes) {option.classes.split(" ").forEach((child:string) =>{if(child)newEle.classList.add(child)}}
+if (option.classes) {
+	option.classes.split(" ").forEach(
+	(child:string) =>{
+		if(child){
+			newEle.classList.add(child);
+			}
+		})};
 if (option.text) {newEle.innerText = option.text}
 if (option.click){newEle.onclick = ()=>option.click()}
 if (option.hover){newEle.onmouseover = ()=>option.hover()}
@@ -130,7 +136,7 @@ function drawMakeNew(todos:TodosModel){
 
     let createBox = makeHtmlElement("div",section,{classes:"create-new-todo container "});
     //let fastCreate = makeToggableTextBox("new todo","fastCreate-"+todos.getId(),createBox,"todo-name");
-    let fastCreate = makeHtmlElement("input",createBox,{placeholder:"new todo",value:"new todo title", classes:"title"})
+    let fastCreate = makeHtmlElement("input",createBox,{placeholder:"new todo", classes:"title"})
     let push       = makeHtmlElement("i",createBox,{classes:"push-new ",text:"quick create"})
     push.addEventListener("click", (e)=> {
         addNewToDo(todos)
@@ -160,6 +166,8 @@ function createEditForm(todos:TodosModel,todo:todo){
     setCreateEditFormDefaults(todo)
     let formBase = <HTMLElement>document.querySelector(".form-module");
     let form = <HTMLElement>document.querySelector(".form-module form");
+    let content = <HTMLElement>document.querySelector(".form-module .content");
+    content.style.height = "70%";
     document.querySelector("form button").textContent = "Update";
     form.onsubmit = (e)=>{
         e.preventDefault()
@@ -315,6 +323,9 @@ function createForm(todos:TodosModel,allowComments=false){
         }
     },true)
     let content = makeHtmlElement("div",formBase,{classes:"content"})
+    makeHtmlElement("h2",content,{classes:"form-header",text:"Create New Task"})
+    makeHtmlElement("hr",content,{classes:"form-header-hr"})
+    content.style.height = "40%";
     let form    = makeHtmlElement("form",content,{});
     let formdiv1 = makeHtmlElement("div",form,{})
     let formdiv2 = makeHtmlElement("div",form,{})
@@ -513,7 +524,8 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
     let section = <HTMLElement>document.querySelector("#section-"+todos.getId() + " .todo-area")
 
     if (!addToDom){section=null}
-    let todoEleWrapper = makeHtmlElement("div",section,{classes:"todo-ele-wrapper"})
+    let isChecked = !todo.getOptions('checkValue') ? "not-checked" : "checked-off"
+    let todoEleWrapper = makeHtmlElement("div",section,{classes:`todo-ele-wrapper ${isChecked} ` }      )
     let todoEle = makeHtmlElement("div",todoEleWrapper,{classes:"todo-ele"})
    
     todoEleWrapper.id = "todo-"+todo.getId();
@@ -591,7 +603,7 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
                     }
                     let notes:Array<note> = <Array<note>>todo.getOptions("notes")
                 let message = notes[notes.length-1].message
-                    let descriptionBox = makeHtmlElement("div",todoEleWrapper,{classes:"info-box new fast com-btn",children:[["div",{text:"LastMessage: "}],["div",{text:message,classes:"descr-txt"}]]});
+                    let descriptionBox = makeHtmlElement("div",todoEleWrapper,{classes:"info-box new fast com-btn",children:[["div",{text:"Last Message: ",classes:"bold"}],["div",{text:message,classes:"descr-txt"}]]});
                 },250);
                
 
@@ -633,14 +645,30 @@ function createTodo(todo:todo,todos:TodosModel,addToDom:boolean=true){
         todos.removeByTodo(todo);
     }
     check.onclick =(e:any)=> {
-        
-        //<HTMLElement>e.target.checked
-        if (!todo.getOptions("checkValue")){
-        (<HTMLElement>document.querySelector("#txtbox-title-"+todo.getId() + " input")).style.textDecoration ="line-through";
+        todo.setOptions("checkValue",!todo.getOptions("checkValue"))
+
+        if (todo.getOptions("checkValue")){
+        (<HTMLElement>document.querySelector("#todo-"+todo.getId())).classList.replace("not-checked","checked-off")
+        banner.innerText = todo.getTitle();
+
     }else{
-        (<HTMLElement>document.querySelector("#txtbox-title-"+todo.getId() + " input")).style.textDecoration ="none";
+        (<HTMLElement>document.querySelector("#todo-"+todo.getId())).classList.replace("checked-off","not-checked")
+        banner.innerText = ""
+
     }
-    todo.setOptions("checkValue",!todo.getOptions("checkValue"))
+}
+    if (isChecked ==="checked-off"){
+        banner.innerText = todo.getTitle();
+    }
+    banner.onclick = (e)=>{
+        todo.setOptions("checkValue",false);
+        (<HTMLInputElement>check).checked = false;
+
+        (<HTMLElement>document.querySelector("#todo-"+todo.getId())).classList.replace("checked-off","not-checked");
+        banner.innerText = ""
+    
+
+
 }
 
 return todoEleWrapper
@@ -739,7 +767,6 @@ class todo{
     getId(){return this.id}
 
     setOptions(name:keyof Partial<Options>,value:any){
-        if (!value){return}
         this.setProps(this.option,name,value);}
     setTitle(title:string){
         if(!title){return}
