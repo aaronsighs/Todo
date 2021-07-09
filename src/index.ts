@@ -167,6 +167,7 @@ function createEditForm(todos:TodosModel,todo:todo){
     let formBase = <HTMLElement>document.querySelector(".form-module");
     let form = <HTMLElement>document.querySelector(".form-module form");
     let content = <HTMLElement>document.querySelector(".form-module .content");
+    (<HTMLElement>document.querySelector(".form-module  h2")).textContent = "Update Task";
     content.style.height = "70%";
     document.querySelector("form button").textContent = "Update";
     form.onsubmit = (e)=>{
